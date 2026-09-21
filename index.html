@@ -131,6 +131,42 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 .day-list span{position:relative;padding-left:28px}
 .day-list span:before{content:"✓";position:absolute;left:0;top:8px;color:var(--gold2);font-weight:900;font-size:16px}
 .form-section .form-copy{color:#11100d!important}
+
+/* ciclo-dependencia-v6 */
+.owner-cycle{position:relative;width:min(760px,78vw);aspect-ratio:1/1;margin:58px auto 0}
+.cycle-ring{position:absolute;inset:17%;border:1px solid rgba(214,173,79,.36);border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.02) inset}
+.cycle-ring:before{content:"";position:absolute;inset:12%;border:1px dashed rgba(214,173,79,.16);border-radius:50%}
+.cycle-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;height:220px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 35%,rgba(214,173,79,.16),rgba(15,14,12,.96) 62%);border:1px solid rgba(214,173,79,.38);box-shadow:0 22px 60px rgba(0,0,0,.36)}
+.cycle-center span{font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:800;text-transform:uppercase}
+.cycle-center strong{display:block;margin-top:7px;font-size:24px;line-height:1.05;letter-spacing:-.035em}
+.cycle-center small{display:block;margin-top:10px;color:#8f8a81;font-size:12px}
+.cycle-node{position:absolute;width:210px;min-height:118px;padding:20px 18px;border-radius:18px;border:1px solid var(--soft);background:linear-gradient(180deg,#14130f,#0d0d0c);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 18px 46px rgba(0,0,0,.25)}
+.cycle-node b{display:block;margin-bottom:8px;color:var(--gold2);font-size:15px;letter-spacing:.08em}
+.cycle-node p{margin:0;color:#ded8cc;font-size:16px;line-height:1.35}
+.cycle-1{left:50%;top:0;transform:translateX(-50%)}
+.cycle-2{right:0;top:24%}
+.cycle-3{right:9%;bottom:2%}
+.cycle-4{left:9%;bottom:2%}
+.cycle-5{left:0;top:24%}
+.cycle-arrow{position:absolute;color:var(--gold);font-size:28px;font-weight:900;line-height:1;opacity:.9}
+.arrow-1{right:16%;top:15%;transform:rotate(18deg)}
+.arrow-2{right:7%;bottom:29%}
+.arrow-3{left:31%;bottom:10%;transform:rotate(14deg)}
+.arrow-4{left:7%;bottom:29%}
+.arrow-5{left:16%;top:15%}
+.cycle-mobile{display:none}
+@media(max-width:860px){
+  .owner-cycle{display:none}
+  .cycle-mobile{display:block;max-width:620px;margin:42px auto 0}
+  .cycle-mobile-title{margin-bottom:22px;padding:18px 20px;border:1px solid rgba(214,173,79,.32);border-radius:18px;background:rgba(214,173,79,.05)}
+  .cycle-mobile-title span{display:block;color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+  .cycle-mobile-title strong{display:block;margin-top:5px;font-size:24px;line-height:1.1}
+  .cycle-mobile-step{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;padding:18px 0;border-top:1px solid var(--soft);text-align:left}
+  .cycle-mobile-step b{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(214,173,79,.48);color:var(--gold2);font-size:14px}
+  .cycle-mobile-step p{margin:0;color:#ddd7cc;font-size:17px}
+  .cycle-mobile-arrow{color:var(--gold);font-size:22px;line-height:1;text-align:center;margin:-4px 0 0}
+  .cycle-mobile-loop{margin-top:16px;padding:16px 18px;border-radius:14px;background:rgba(214,173,79,.08);color:var(--gold2);font-weight:750;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -160,12 +196,38 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 
 <section class="section dark pain-section center-flow"><div class="wrap">
   <div class="pain-intro reveal"><div><h2>Sua clínica cresce.<br>Mas você continua <span class="gold">crescendo junto com o problema?</span></h2></div><p class="body muted">A clínica fatura. Tem pacientes. Tem equipe. Tem marketing. Talvez já tenha comercial. Mas quando alguma coisa realmente importante precisa acontecer, quase tudo ainda volta para você.</p></div>
-  <div class="pain-grid reveal">
-    <div class="pain-item"><div class="n">01</div><p>Quando precisa vender mais, você entra.</p></div>
-    <div class="pain-item"><div class="n">02</div><p>Quando a equipe trava, você resolve.</p></div>
-    <div class="pain-item"><div class="n">03</div><p>Quando o mês não está bom, você aumenta a pressão.</p></div>
-    <div class="pain-item"><div class="n">04</div><p>Quando aparece um problema importante, a decisão volta para sua mesa.</p></div>
+
+  <div class="owner-cycle reveal" aria-label="O ciclo da dependência do dono">
+    <div class="cycle-ring" aria-hidden="true"></div>
+    <div class="cycle-center"><span>O CICLO DA</span><strong>DEPENDÊNCIA<br>DO DONO</strong><small>se repete mês após mês</small></div>
+
+    <div class="cycle-node cycle-1"><b>01</b><p>O mês começa abaixo do esperado.</p></div>
+    <div class="cycle-node cycle-2"><b>02</b><p>Você entra para vender mais.</p></div>
+    <div class="cycle-node cycle-3"><b>03</b><p>A pressão aumenta e a equipe trava.</p></div>
+    <div class="cycle-node cycle-4"><b>04</b><p>As decisões voltam para a sua mesa.</p></div>
+    <div class="cycle-node cycle-5"><b>05</b><p>Você resolve no braço, mas a causa continua.</p></div>
+
+    <div class="cycle-arrow arrow-1" aria-hidden="true">→</div>
+    <div class="cycle-arrow arrow-2" aria-hidden="true">↘</div>
+    <div class="cycle-arrow arrow-3" aria-hidden="true">↙</div>
+    <div class="cycle-arrow arrow-4" aria-hidden="true">←</div>
+    <div class="cycle-arrow arrow-5" aria-hidden="true">↖</div>
   </div>
+
+  <div class="cycle-mobile reveal" aria-label="O ciclo da dependência do dono">
+    <div class="cycle-mobile-title"><span>O ciclo da</span><strong>dependência do dono</strong></div>
+    <div class="cycle-mobile-step"><b>01</b><p>O mês começa abaixo do esperado.</p></div>
+    <div class="cycle-mobile-arrow">↓</div>
+    <div class="cycle-mobile-step"><b>02</b><p>Você entra para vender mais.</p></div>
+    <div class="cycle-mobile-arrow">↓</div>
+    <div class="cycle-mobile-step"><b>03</b><p>A pressão aumenta e a equipe trava.</p></div>
+    <div class="cycle-mobile-arrow">↓</div>
+    <div class="cycle-mobile-step"><b>04</b><p>As decisões voltam para a sua mesa.</p></div>
+    <div class="cycle-mobile-arrow">↓</div>
+    <div class="cycle-mobile-step"><b>05</b><p>Você resolve no braço, mas a causa continua.</p></div>
+    <div class="cycle-mobile-loop">↺ E no mês seguinte, o ciclo começa de novo.</div>
+  </div>
+
   <div class="pain-impact reveal"><div class="big">O faturamento aumenta.<br><span class="gold">Mas a dependência do dono aumenta junto.</span></div><p>O objetivo não é simplesmente colocar mais dinheiro dentro da clínica. É construir uma operação capaz de produzir mais resultado sem exigir que você trabalhe proporcionalmente mais para isso acontecer.</p></div>
 </div></section>
 
