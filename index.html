@@ -30,25 +30,77 @@ details{border-bottom:1px solid var(--whiteLine);padding:22px 0}summary{cursor:p
 @media(max-width:980px){.hero-grid,.head,.visual-split,.visual-split.reverse,.audience,.invite{grid-template-columns:1fr}.hero{padding-top:110px}.hero-media{height:650px;min-height:0}.cards5{grid-template-columns:1fr 1fr}.cards3,.steps{grid-template-columns:1fr}.duo{grid-template-columns:1fr}.invite .btn{justify-self:start}.meta{display:none}.portrait{height:620px}.samuel{min-height:680px}.samuel-bg:after{background:linear-gradient(180deg,rgba(5,5,5,.08),rgba(5,5,5,.92) 72%)}.samuel-content{padding-top:420px}.floating-cta{display:none}.mobile-cta{display:block;position:fixed;z-index:29;left:12px;right:12px;bottom:10px}.mobile-cta .btn{width:100%;padding:15px 18px}.footer{padding-bottom:90px}}
 @media(max-width:620px){.section{padding:76px 0}.topin{height:62px}.hero{min-height:auto;padding-top:98px;padding-bottom:70px}.hero-grid{gap:34px}.hero-media{height:500px}.hero-stamp{left:18px;right:18px;bottom:18px}.date-box{display:none}.facts{grid-template-columns:repeat(3,1fr);gap:8px}.fact strong{font-size:25px}.fact span{font-size:11px}.cards5{grid-template-columns:1fr}.pain div{grid-template-columns:30px 1fr}.pain p{font-size:17px}.portrait{height:520px}.duo-card img{height:420px}.samuel{min-height:640px}.samuel-content{padding-top:390px;padding-bottom:72px}.modal-card{padding:28px 20px}.modal-card h3{font-size:28px}.cta-row{justify-content:stretch}.cta-row .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.reveal{opacity:1;transform:none;transition:none}.btn{transition:none}}
+
+/* Ajustes visuais — hero, logo e prova social */
+.brand{display:flex;align-items:center;min-width:0}
+.brand img{display:block;width:172px;max-height:52px;object-fit:contain;object-position:left center}
+.event-edition{display:inline-grid;grid-template-columns:auto auto;gap:1px 12px;align-items:center;padding:11px 15px 10px;border-color:rgba(214,173,79,.34);background:rgba(214,173,79,.055);border-radius:14px}
+.event-edition span{grid-column:1/-1;color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.16em}
+.event-edition strong{font-size:13px;color:#f3eee3;letter-spacing:.025em}
+.event-edition em{font-size:11px;color:#aaa69d;font-style:normal;letter-spacing:.08em}
+.hero{background:
+  radial-gradient(circle at 82% 45%,rgba(214,173,79,.14),transparent 28%),
+  radial-gradient(circle at 14% 20%,rgba(214,173,79,.12),transparent 30%),#070707}
+.hero-grid{grid-template-columns:1.03fr .97fr;gap:22px}
+.hero-media-transparent{height:auto;min-height:0;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;padding:0;display:flex;align-items:flex-end;justify-content:center}
+.hero-media-transparent:after,.hero-media-transparent:before{display:none!important}
+.hero-media-transparent img{width:min(720px,118%);height:auto;max-height:none;object-fit:contain;object-position:center bottom;filter:none;display:block;transform:translateY(26px);filter:drop-shadow(0 26px 50px rgba(0,0,0,.38))}
+.proof-section{background:
+  radial-gradient(circle at 50% 15%,rgba(214,173,79,.10),transparent 28%),
+  #090909;overflow:hidden}
+.proof-head{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:end;margin-bottom:46px}
+.proof-head p{color:var(--muted);font-size:18px;max-width:560px;margin:0}
+.proof-carousel{position:relative}
+.proof-viewport{overflow:hidden;padding:10px 1px 18px;touch-action:pan-y}
+.proof-track{display:flex;gap:20px;transition:transform .58s cubic-bezier(.22,.7,.22,1);will-change:transform}
+.proof-slide{flex:0 0 calc((100% - 40px)/3);margin:0;border-radius:22px;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 45px rgba(0,0,0,.28);transform:scale(.965);opacity:.78;transition:transform .35s ease,opacity .35s ease,border-color .35s ease}
+.proof-slide.is-active{transform:scale(1);opacity:1;border-color:rgba(214,173,79,.38)}
+.proof-slide img{display:block;width:100%;height:520px;object-fit:contain;background:#efe8df}
+.proof-controls{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:8px}
+.proof-dots{display:flex;gap:8px;flex-wrap:wrap}
+.proof-dot{width:8px;height:8px;border:0;padding:0;border-radius:50%;background:#4f4b43;cursor:pointer;transition:.2s}
+.proof-dot.is-active{width:26px;border-radius:99px;background:var(--gold)}
+.proof-arrows{display:flex;gap:10px}
+.proof-arrow{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:#121212;color:#eee;cursor:pointer;font-size:20px;transition:.2s}
+.proof-arrow:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+@media(max-width:980px){
+  .brand img{width:150px;max-height:46px}
+  .hero-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .hero-media-transparent{height:auto}
+  .hero-media-transparent img{width:118%;transform:translate(2%,20px)}
+  .proof-head{grid-template-columns:1fr;gap:16px}
+  .proof-slide{flex-basis:calc((100% - 20px)/2)}
+  .proof-slide img{height:520px}
+}
+@media(max-width:680px){
+  .brand img{width:126px;max-height:40px}
+  .hero-grid{grid-template-columns:1fr;gap:18px}
+  .event-edition{margin-bottom:18px}
+  .hero-media-transparent{margin-top:-10px}
+  .hero-media-transparent img{width:108%;max-width:560px;transform:translateY(18px)}
+  .proof-slide{flex-basis:100%}
+  .proof-slide img{height:auto;max-height:620px}
+  .proof-controls{margin-top:4px}
+}
+
 </style>
 </head>
 <body>
 <div class="progress" id="progress"></div>
-<header class="top"><div class="wrap topin"><div class="brand"><b>1</b> MÊS EM 1 DIA</div><div class="meta">19 E 20 OUT 2026 • ALPHAVILLE/SP</div></div></header>
+<header class="top"><div class="wrap topin"><div class="brand"><img src="/assets/logo-oficial.png" alt="Método 1 Mês em 1 Dia"></div><div class="meta">19 E 20 OUT 2026 • ALPHAVILLE/SP</div></div></header>
 
 <main>
 <!-- Bloco 1 -->
 <section class="section hero">
   <div class="wrap hero-grid">
     <div class="hero-copy reveal">
-      <div class="event-chip">IMERSÃO PRESENCIAL • ALPHAVILLE</div>
+      <div class="event-chip event-edition"><span>PRÓXIMA EDIÇÃO</span><strong>19 E 20 DE OUTUBRO</strong><em>ALPHAVILLE • SP</em></div>
       <h1>O método por trás de <span class="gold">R$ 1.276.145</span> gerados em um único dia.</h1>
       <p class="lead">Dois dias para entender a estratégia, os processos e a execução de uma campanha real e sair com um plano de ação para construir o seu próprio <strong>1 Mês em 1 Dia</strong>, sem depender de trabalhar mais horas para crescer.</p>
       <div class="facts"><div class="fact"><strong>2</strong><span>dias de imersão</span></div><div class="fact"><strong>5</strong><span>pilares</span></div><div class="fact"><strong>1</strong><span>plano de ação</span></div></div>
     </div>
-    <div class="hero-media reveal">
-      <img src="/assets/casal.webp" alt="Lauro e Renata Freire" loading="eager">
-      <div class="hero-stamp"><div><strong>Lauro & Renata Freire</strong><span>Estratégia, execução e prosperidade com princípios.</span></div><div class="date-box">19–20 OUT • 2026</div></div>
+    <div class="hero-media hero-media-transparent reveal">
+      <img src="/assets/hero-oficial.png" alt="Método 1 Mês em 1 Dia com Lauro e Renata Freire" loading="eager">
     </div>
   </div>
 </section>
@@ -59,6 +111,40 @@ details{border-bottom:1px solid var(--whiteLine);padding:22px 0}summary{cursor:p
   <div class="cards3"><div class="card reveal"><div class="metric">R$ 1,27M+</div><p>gerados em um único dia.</p></div><div class="card reveal"><h3>Estratégia aberta</h3><p>Números, decisões, execução e aprendizados do que aconteceu na prática.</p></div><div class="card reveal"><h3>Aplicação</h3><p>Transforme o debriefing em prioridades para a sua própria operação.</p></div></div>
   <div class="cta-row reveal"><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
 </div></section>
+
+
+<!-- Prova social -->
+<section class="section proof-section">
+  <div class="wrap">
+    <div class="proof-head reveal">
+      <div>
+        <h2>Não é promessa.<br><span class="gold">É resultado acontecendo.</span></h2>
+      </div>
+      <p>Resultados reais compartilhados por quem colocou estratégia, comercial e execução em prática.</p>
+    </div>
+
+    <div class="proof-carousel reveal" id="proofCarousel" aria-label="Carrossel de resultados reais">
+      <div class="proof-viewport">
+        <div class="proof-track" id="proofTrack">
+          <figure class="proof-slide"><img src="/assets/resultado-real-1.png" alt="Resultado real compartilhado no WhatsApp" loading="lazy"></figure>
+          <figure class="proof-slide"><img src="/assets/resultado-real-2.png" alt="Resultado real compartilhado no WhatsApp" loading="lazy"></figure>
+          <figure class="proof-slide"><img src="/assets/resultado-real-3.png" alt="Resultado real compartilhado no WhatsApp" loading="lazy"></figure>
+          <figure class="proof-slide"><img src="/assets/resultado-real-4.png" alt="Resultado real compartilhado no WhatsApp" loading="lazy"></figure>
+          <figure class="proof-slide"><img src="/assets/resultado-real-5.png" alt="Resultado real compartilhado no WhatsApp" loading="lazy"></figure>
+        </div>
+      </div>
+      <div class="proof-controls">
+        <div class="proof-dots" id="proofDots" aria-label="Navegação do carrossel"></div>
+        <div class="proof-arrows">
+          <button type="button" class="proof-arrow" id="proofPrev" aria-label="Resultado anterior">←</button>
+          <button type="button" class="proof-arrow" id="proofNext" aria-label="Próximo resultado">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row reveal"><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
+  </div>
+</section>
 
 <!-- Bloco 3 -->
 <section class="section"><div class="wrap">
@@ -140,6 +226,66 @@ document.querySelectorAll('[data-open-form]').forEach(function(b){b.addEventList
 var tel=document.getElementById('telefone');tel.addEventListener('input',function(){var v=this.value.replace(/\D/g,'').slice(0,11);if(v.length>10)this.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>6)this.value='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);else if(v.length>2)this.value='('+v.slice(0,2)+') '+v.slice(2);else this.value=v});
 var qs=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign'].forEach(function(k){var el=document.getElementById(k);if(el)el.value=qs.get(k)||''});
 document.getElementById('leadForm').addEventListener('submit',function(e){e.preventDefault();window.location.href='/obrigado.html'});
+
+// Prova social: autoplay, setas, dots, hover e swipe
+(function(){
+  var carousel=document.getElementById('proofCarousel');
+  if(!carousel) return;
+  var track=document.getElementById('proofTrack');
+  var slides=[].slice.call(track.querySelectorAll('.proof-slide'));
+  var dotsWrap=document.getElementById('proofDots');
+  var prev=document.getElementById('proofPrev');
+  var next=document.getElementById('proofNext');
+  var index=0, timer=null, touchStart=0, paused=false;
+
+  function perView(){
+    if(window.innerWidth>=981) return 3;
+    if(window.innerWidth>=681) return 2;
+    return 1;
+  }
+  function maxIndex(){ return Math.max(0,slides.length-perView()); }
+  function rebuildDots(){
+    dotsWrap.innerHTML='';
+    for(var i=0;i<=maxIndex();i++){
+      var b=document.createElement('button');
+      b.type='button';
+      b.className='proof-dot';
+      b.setAttribute('aria-label','Ir para o grupo '+(i+1));
+      (function(n){b.addEventListener('click',function(){index=n;update();restart();})})(i);
+      dotsWrap.appendChild(b);
+    }
+  }
+  function update(){
+    var gap=parseFloat(getComputedStyle(track).gap)||20;
+    var step=(slides[0]?slides[0].getBoundingClientRect().width:0)+gap;
+    index=Math.min(Math.max(index,0),maxIndex());
+    track.style.transform='translate3d('+(-index*step)+'px,0,0)';
+    slides.forEach(function(s){s.classList.remove('is-active')});
+    var center=index+Math.floor((perView()-1)/2);
+    if(slides[center]) slides[center].classList.add('is-active');
+    [].slice.call(dotsWrap.children).forEach(function(d,i){d.classList.toggle('is-active',i===index)});
+  }
+  function advance(){ index=index>=maxIndex()?0:index+1; update(); }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} }
+  function start(){ stop(); if(!paused) timer=setInterval(advance,4200); }
+  function restart(){ stop(); setTimeout(start,120); }
+
+  prev.addEventListener('click',function(){index=index<=0?maxIndex():index-1;update();restart();});
+  next.addEventListener('click',function(){advance();restart();});
+  carousel.addEventListener('mouseenter',function(){paused=true;stop();});
+  carousel.addEventListener('mouseleave',function(){paused=false;start();});
+  carousel.addEventListener('focusin',function(){paused=true;stop();});
+  carousel.addEventListener('focusout',function(){paused=false;start();});
+  carousel.addEventListener('touchstart',function(e){touchStart=e.touches[0].clientX;paused=true;stop();},{passive:true});
+  carousel.addEventListener('touchend',function(e){
+    var end=e.changedTouches[0].clientX,delta=end-touchStart;
+    if(Math.abs(delta)>45){if(delta<0) advance(); else {index=index<=0?maxIndex():index-1;update();}}
+    paused=false;start();
+  },{passive:true});
+  window.addEventListener('resize',function(){index=Math.min(index,maxIndex());rebuildDots();update();restart();});
+  rebuildDots();update();start();
+})();
+
 </script>
 </body>
 </html>
