@@ -97,6 +97,19 @@ details{border-bottom:1px solid var(--whiteLine);padding:22px 0}summary{cursor:p
 @media(max-width:980px){.copy-focus{max-width:760px}.samuel-panel{grid-template-columns:1fr 320px;gap:38px}.samuel-photo{max-width:320px}}
 @media(max-width:720px){.copy-focus{max-width:none}.samuel-panel{grid-template-columns:1fr;gap:32px}.samuel-photo{justify-self:start;max-width:340px;width:min(100%,340px)}.samuel-photo img{max-height:none}}
 
+
+/* copy-v2-authority-layout */
+.authority-panel,.samuel-panel{display:grid;grid-template-columns:1fr minmax(280px,390px);gap:72px;align-items:center}
+.authority-copy,.samuel-copy{max-width:650px}
+.authority-copy p,.samuel-copy p{font-size:18px;color:#cbc6bc}
+.authority-photo,.samuel-photo{width:100%;max-width:390px;justify-self:end;border-radius:26px;overflow:hidden;border:1px solid var(--line);background:#0b0b0b;box-shadow:0 28px 70px rgba(0,0,0,.35)}
+.authority-photo img,.samuel-photo img{display:block;width:100%;height:auto;object-fit:contain;background:#0b0b0b}
+.authority-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.mini-card{border:1px solid var(--whiteLine);background:#0c0c0c;border-radius:18px;padding:22px}
+.mini-card .mini{color:var(--gold);font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:block}
+.mini-card p{margin:0;color:var(--muted);font-size:16px}
+@media(max-width:980px){.authority-panel,.samuel-panel{grid-template-columns:1fr 320px;gap:38px}.authority-photo,.samuel-photo{max-width:320px}}
+@media(max-width:720px){.authority-panel,.samuel-panel{grid-template-columns:1fr;gap:32px}.authority-photo,.samuel-photo{justify-self:start;max-width:340px;width:min(100%,340px)}}
 </style>
 </head>
 <body>
@@ -111,7 +124,8 @@ details{border-bottom:1px solid var(--whiteLine);padding:22px 0}summary{cursor:p
       <div class="event-chip event-edition"><span>PRÓXIMA EDIÇÃO</span><strong>19 E 20 DE OUTUBRO</strong><em>ALPHAVILLE • SP</em></div>
       <h1>O método por trás de <span class="gold">R$ 1.276.145</span> gerados em um único dia.</h1>
       <p class="lead">Dois dias para entender a estratégia, os processos e a execução de uma campanha real e sair com um plano de ação para construir o seu próprio <strong>1 Mês em 1 Dia</strong>, sem depender de trabalhar mais horas para crescer.</p>
-      <div class="facts"><div class="fact"><strong>2</strong><span>dias de imersão</span></div><div class="fact"><strong>5</strong><span>pilares</span></div><div class="fact"><strong>1</strong><span>plano de ação</span></div></div>
+      <button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button>
+      <div class="facts"><div class="fact"><strong>2 dias</strong><span>de imersão presencial.</span></div><div class="fact"><strong>5 frentes</strong><span>de negócio integradas.</span></div><div class="fact"><strong>1 plano</strong><span>para adaptar ao seu contexto.</span></div></div>
     </div>
     <div class="hero-media hero-media-transparent reveal">
       <img src="/assets/hero-oficial.png" alt="Método 1 Mês em 1 Dia com Lauro e Renata Freire" loading="eager">
@@ -161,43 +175,52 @@ details{border-bottom:1px solid var(--whiteLine);padding:22px 0}summary{cursor:p
 </section>
 
 <!-- Bloco 3 -->
-<section class="section"><div class="wrap">
-  <div class="head reveal"><div><h2>Seu negócio cresce, mas <span class="gold">você continua preso nele?</span></h2></div><p>Quando o crescimento depende de você resolver tudo, vender todo dia e apagar incêndios, o faturamento pode avançar, mas a operação continua frágil.</p></div>
-  <div class="pain reveal"><div><span>01</span><p>Você trabalha muito, mas o resultado ainda não acompanha o esforço.</p></div><div><span>02</span><p>Marketing recebe investimento, mas falta previsibilidade para transformar atenção em receita.</p></div><div><span>03</span><p>Time e processos ainda dependem demais do dono.</p></div><div><span>04</span><p>Existe potencial, mas não uma sequência clara para destravar o próximo nível.</p></div><div><span>05</span><p>O negócio consome tempo que deveria voltar para estratégia, família e vida pessoal.</p></div></div>
+<section class="section dark"><div class="wrap">
+  <div class="head reveal"><div><h2>Seu negócio cresce, mas você continua <span class="gold">preso nele?</span></h2></div><p>Se o resultado ainda depende da sua presença o tempo todo, o faturamento pode até subir, mas a operação continua frágil, cansativa e imprevisível.</p></div>
+  <div class="pain reveal">
+    <div><span>01</span><p>Quando você desacelera, o faturamento desacelera junto.</p></div>
+    <div><span>02</span><p>Você investe em marketing, mas ainda torce para o mês fechar.</p></div>
+    <div><span>03</span><p>Seu time executa, mas as decisões importantes continuam voltando para você.</p></div>
+    <div><span>04</span><p>Quando aparece um pico de receita, ele parece exceção, não um sistema repetível.</p></div>
+    <div><span>05</span><p>O negócio cresce, mas cobra um preço alto em energia, tempo e presença em casa.</p></div>
+  </div>
 </div></section>
 
 <!-- Bloco 4 -->
 <section class="section dark"><div class="wrap copy-focus">
-  <div class="visual-copy reveal"><div class="kicker">Estratégia que conecta o negócio</div><h2>Crescimento não pode depender de <span class="gold">improviso.</span></h2><p>Marketing isolado não sustenta resultado. A operação precisa conectar estratégia, comercial, processos, números e eficiência.</p><div class="quote">O objetivo é enxergar a empresa como um sistema e atacar a origem do gargalo, não apenas o sintoma.</div><div class="tags"><span class="tag">Estratégia</span><span class="tag">Crescimento</span><span class="tag">Comercial</span><span class="tag">Processos</span><span class="tag">Números</span><span class="tag">IA & eficiência</span></div><button class="btn" data-open-form>QUERO SABER COMO PARTICIPAR</button></div>
+  <div class="visual-copy reveal"><div class="kicker">O que trava o próximo nível</div><h2>O problema não é falta de esforço. É falta de <span class="gold">sistema.</span></h2><p>A maioria das empresas não cresce de forma previsível porque marketing, comercial, processos, números e operação correm separados. A imersão foi desenhada para mostrar como integrar essas frentes dentro de um método que organiza aquisição, conversão e entrega.</p><div class="quote">A pergunta não é como vender mais uma vez. É como construir uma operação capaz de repetir resultado sem depender do improviso.</div><div class="tags"><span class="tag">Aquisição</span><span class="tag">Conversão</span><span class="tag">Comercial</span><span class="tag">Processos</span><span class="tag">Indicadores</span><span class="tag">Eficiência</span></div><button class="btn" data-open-form>QUERO SABER COMO PARTICIPAR</button></div>
 </div></section>
 
 <!-- Bloco 5 -->
-<section class="section"><div class="wrap"><div class="head reveal"><div><h2>Da ideia ao <span class="gold">plano executável.</span></h2></div><p>A imersão organiza o raciocínio em uma sequência direta para você sair sabendo o que precisa construir primeiro.</p></div><div class="steps"><div class="step reveal"><b>Diagnosticar</b><h3>Encontre o gargalo real.</h3><p>Posicionamento, time, comercial, processos e finanças.</p></div><div class="step reveal"><b>Estruturar</b><h3>Organize a máquina.</h3><p>Campanha, papéis, captação, abordagem e indicadores.</p></div><div class="step reveal"><b>Executar</b><h3>Transforme em ação.</h3><p>Prioridades claras para adaptar o método ao seu negócio.</p></div></div></div></section>
+<section class="section"><div class="wrap"><div class="head reveal"><div><h2>Como o raciocínio é organizado <span class="gold">nos 2 dias.</span></h2></div><p>A imersão não joga conceitos soltos. Ela organiza a tomada de decisão em uma sequência para você sair sabendo o que corrigir, o que construir e o que executar primeiro.</p></div><div class="steps"><div class="step reveal"><b>Passo 1</b><h3>Diagnosticar o gargalo real.</h3><p>Identificar onde o dinheiro vaza, onde o dono centraliza e o que impede previsibilidade.</p></div><div class="step reveal"><b>Passo 2</b><h3>Desenhar a estrutura.</h3><p>Campanha, comercial, papéis, abordagem, rotina e indicadores conectados ao mesmo objetivo.</p></div><div class="step reveal"><b>Passo 3</b><h3>Transformar em plano.</h3><p>Levar prioridades claras para adaptar o método ao seu negócio depois da imersão.</p></div></div></div></section>
 
 <!-- Bloco 6 -->
-<section class="section dark"><div class="wrap"><div class="head reveal"><div><h2>Atacar o negócio <span class="gold">por inteiro.</span></h2></div><p>Não é uma aula isolada de marketing. A proposta conecta crescimento profissional, estrutura empresarial, relações, valores e construção financeira.</p></div><div class="cards5"><div class="card reveal"><h3>Descoberta Essencial</h3><p>Identidade, visão, crenças e mentalidade estratégica.</p></div><div class="card reveal"><h3>Potência da Unidade</h3><p>Papéis, alinhamento entre casal ou sócios e visão comum.</p></div><div class="card reveal"><h3>Valores</h3><p>Princípios que orientam decisões e cultura.</p></div><div class="card reveal"><h3>Máquina Empresarial</h3><p>Marketing, comercial, pessoas, processos e indicadores.</p></div><div class="card reveal"><h3>Patrimônio</h3><p>Resultado, disciplina financeira e visão de longo prazo.</p></div></div></div></section>
+<section class="section dark"><div class="wrap"><div class="head reveal"><div><h2>O que você vai ver <span class="gold">na prática.</span></h2></div><p>Em vez de ficar em conceitos genéricos, a imersão abre os componentes que sustentam uma operação mais previsível e mais lucrativa.</p></div><div class="cards5"><div class="card reveal"><h3>Engenharia da campanha</h3><p>Oferta, agenda, aquecimento e captação para concentrar demanda com inteligência.</p></div><div class="card reveal"><h3>Comercial e conversão</h3><p>Abordagem, follow-up e condução da decisão para transformar interesse em receita.</p></div><div class="card reveal"><h3>Pessoas e papéis</h3><p>Quem faz o quê, onde o dono trava a operação e como reduzir centralização.</p></div><div class="card reveal"><h3>Números e indicadores</h3><p>O que acompanhar para tomar decisão e não depender de feeling o tempo todo.</p></div><div class="card reveal"><h3>Eficiência e escala</h3><p>Processos, tecnologia e IA aplicados para ganhar tempo e aumentar execução.</p></div></div></div></section>
 
 <!-- Bloco 7 -->
-<section class="section"><div class="wrap audience"><div class="reveal"><h2>Para quem entendeu que <span class="gold">crescer no improviso tem limite.</span></h2><p class="lead">Empresários, donos de clínicas e gestores que já têm uma operação real e querem aumentar resultado com mais estrutura.</p></div><div class="checks reveal"><div class="check">Já tem negócio rodando e equipe.</div><div class="check">Quer melhorar marketing e comercial.</div><div class="check">Precisa reduzir a centralização no dono.</div><div class="check">Quer mais clareza sobre números e prioridades.</div><div class="check">Está disposto a executar depois do evento.</div></div></div></section>
+<section class="section"><div class="wrap audience"><div class="reveal"><h2>Para quem já provou que sabe trabalhar e agora precisa <span class="gold">estruturar o crescimento.</span></h2><p class="lead">Empresários, donos de clínicas e gestores que já têm operação real, mas não querem continuar crescendo no braço.</p></div><div class="checks reveal"><div class="check">Já vende, mas ainda sem previsibilidade consistente.</div><div class="check">Tem equipe ou quer estruturar uma máquina mais organizada.</div><div class="check">Quer parar de depender de picos ocasionais para bater meta.</div><div class="check">Busca crescimento com processo, não com improviso.</div><div class="check">Está disposto a executar depois do evento.</div></div></div></section>
 
 <!-- Bloco 8 -->
 <section class="section dark"><div class="wrap copy-focus">
-  <div class="visual-copy reveal"><div class="kicker">Comercial, relacionamento e experiência</div><h2>Venda não termina quando o cliente diz <span class="gold">sim.</span></h2><p>Estratégia comercial, nutrição e relacionamento precisam conduzir a decisão com intenção e sustentar a qualidade da experiência até a entrega.</p><div class="quote">Follow-up não é disparar por disparar. É entender o momento, nutrir e conduzir a decisão.</div><div class="tags"><span class="tag">Vendas</span><span class="tag">Nutrição</span><span class="tag">Relacionamento</span><span class="tag">Liderança</span><span class="tag">Experiência</span></div><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
+  <div class="visual-copy reveal"><div class="kicker">Comercial, follow-up e experiência</div><h2>Venda não termina quando o cliente diz <span class="gold">sim.</span></h2><p>Uma campanha forte chama atenção. Mas é o comercial, o acompanhamento e a experiência que transformam interesse em caixa e caixa em reputação.</p><div class="quote">Não basta gerar lead. É preciso conduzir a decisão, sustentar a experiência e fazer a operação entregar o que promete.</div><div class="tags"><span class="tag">Vendas</span><span class="tag">Follow-up</span><span class="tag">Nutrição</span><span class="tag">Relacionamento</span><span class="tag">Experiência</span></div><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
 </div></section>
 
 <!-- Bloco 9 -->
 <section class="section"><div class="wrap"><div class="invite reveal"><div><h2>Entenda como participar da <span class="gold">Imersão 1 Mês em 1 Dia.</span></h2><p>19 e 20 de outubro de 2026 • Centro de Eventos SDA • Alphaville/SP. Clique no botão e deixe nome, telefone e e-mail para receber os detalhes.</p></div><button class="btn" data-open-form>QUERO SABER MAIS</button></div></div></section>
 
 <!-- Bloco 10 -->
-<section class="section goldband"><div class="wrap reveal"><h2>Você não precisa de mais uma ideia salva. Precisa transformar decisão em execução.</h2><p>Se a empresa já provou que tem potencial, mas continua crescendo com os mesmos gargalos e a mesma centralização, o resultado tende a se repetir, só com mais cansaço.</p></div></section>
+<section class="section goldband"><div class="wrap reveal"><h2>Se você continuar crescendo no braço, vai continuar pagando o preço do improviso.</h2><p>Mais ideias não resolvem um negócio sem sistema. O que muda o jogo é enxergar o gargalo, reorganizar a operação e executar com método.</p></div></section>
 
 <!-- Bloco 11 -->
-<section class="section dark"><div class="wrap"><div class="head reveal"><div><h2>Uma base comum.<br><span class="gold">Competências complementares.</span></h2></div><p>Lauro e Renata constroem a mesma marca e a mesma visão de prosperidade, com ênfases diferentes de competência dentro da operação.</p></div><div class="duo"><article class="duo-card lauro reveal"><img src="/assets/lauro.webp" alt="Lauro Freire" loading="lazy"><div class="duo-copy"><div class="mini">Lauro Freire</div><h3>Estratégia, estrutura e crescimento.</h3><p>Visão sistêmica, números, processos, comercial, tecnologia e eficiência.</p></div></article><article class="duo-card renata reveal"><img src="/assets/renata.webp" alt="Renata Freire" loading="lazy"><div class="duo-copy"><div class="mini">Renata Freire</div><h3>Comercial, vendas e experiência.</h3><p>Relacionamento, nutrição, liderança, comunicação e qualidade da entrega.</p></div></article></div><div class="base-line reveal">A base permanece a mesma: <strong>fé, matrimônio, família, trabalho e prosperidade.</strong></div></div></section>
+<section class="section dark"><div class="wrap authority-panel">
+  <div class="authority-copy reveal"><div class="kicker">Quem conduz a imersão</div><h2>Lauro e Renata Freire</h2><p>Uma combinação de estratégia, comercial e visão de negócio aplicada em uma campanha real que gerou mais de R$ 1,27 milhão em um único dia.</p><div class="authority-grid"><div class="mini-card"><span class="mini">Lauro Freire</span><p>Estratégia, estrutura, números, processos, tecnologia e crescimento com visão sistêmica do negócio.</p></div><div class="mini-card"><span class="mini">Renata Freire</span><p>Comercial, vendas, nutrição, relacionamento, liderança e experiência ao longo da jornada do cliente.</p></div></div><div class="base-line">A base que sustenta a construção deles permanece a mesma: <strong>fé, matrimônio, família, trabalho e prosperidade.</strong></div></div>
+  <div class="authority-photo reveal"><img src="/assets/lauro-renata-completo.webp" alt="Lauro e Renata Freire" loading="lazy"></div>
+</div></section>
 
 <!-- Bloco 12 -->
-<section class="section dark samuel-section"><div class="wrap samuel-panel">
-  <div class="samuel-copy reveal"><div class="mini">Convidado especial</div><h2>Samuel Pereira</h2><p>Fundador do SDA Holding e criador do Segredos da Audiência, com participação na imersão em uma conversa sobre marketing e posicionamento.</p><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
-  <div class="samuel-photo reveal"><img src="/assets/samuel.webp" alt="Samuel Pereira no palco" loading="lazy"></div>
+<section class="section dark"><div class="wrap samuel-panel">
+  <div class="samuel-copy reveal"><div class="kicker">Convidado especial</div><h2>Samuel Pereira</h2><p>Fundador do SDA Holding e criador do Segredos da Audiência, com participação na imersão em uma conversa sobre marketing e posicionamento.</p><button class="btn" data-open-form>QUERO RECEBER OS DETALHES</button></div>
+  <div class="samuel-photo reveal"><img src="/assets/samuel-pereira.webp" alt="Samuel Pereira" loading="lazy"></div>
 </div></section>
 
 <!-- Bloco 13 -->
