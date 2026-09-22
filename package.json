@@ -8,7 +8,8 @@
     "start": "next start -p $PORT",
     "db:push": "prisma db push --skip-generate",
     "db:seed": "tsx scripts/seed.ts",
-    "lint": "next lint"
+    "lint": "next lint",
+    "smoke:db": "tsx scripts/smoke-db.ts"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
