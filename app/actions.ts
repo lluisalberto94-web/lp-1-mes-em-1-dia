@@ -22,7 +22,7 @@ export async function updateTrainingPrompt(formData:FormData){
   const prompt=String(formData.get('prompt')||'').trim();
   if(!prompt)return;
   await prisma.$transaction(async(tx)=>{
-    const current=await tx.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
+    const current=await tx.trainingPrompt.findFirst({where:{kind,scope}});
     if(!current){
       await tx.trainingPrompt.create({data:{kind,scope,prompt,revisions:{create:{version:1,prompt}}}});
       return;
@@ -41,7 +41,7 @@ export async function restoreTrainingPromptRevision(formData:FormData){
   const revisionId=String(formData.get('revisionId')||'');
   if(!revisionId)return;
   await prisma.$transaction(async(tx)=>{
-    const current=await tx.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
+    const current=await tx.trainingPrompt.findFirst({where:{kind,scope}});
     const revision=await tx.promptRevision.findUnique({where:{id:revisionId}});
     if(!current||!revision||revision.trainingPromptId!==current.id)return;
     const next=current.version+1;
