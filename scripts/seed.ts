@@ -1,5 +1,5 @@
-import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope } from '@prisma/client';
-import { defaultTrainingPrompts } from '../lib/training';
+import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope, TrainingKind } from '@prisma/client';
+import { getDefaultTrainingPrompt } from '../lib/training';
 const prisma=new PrismaClient();
 const ideas=[
 ['Sua clínica cresce ou só tem meses bons?',Author.LAURO,Pillar.NEGOCIOS,ContentFormat.REEL,Category.CAPACIDADE,[Platform.INSTAGRAM,Platform.TIKTOK,Platform.YOUTUBE_SHORTS]],
