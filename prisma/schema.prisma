@@ -65,6 +65,11 @@ enum PromptScope {
   MULTIPLATAFORMA
 }
 
+enum TrainingKind {
+  IDEIA
+  ROTEIRO
+}
+
 model Content {
   id          String        @id @default(cuid())
   scheduledAt DateTime?
@@ -132,7 +137,8 @@ model Idea {
 
 model TrainingPrompt {
   id          String           @id @default(cuid())
-  scope       PromptScope      @unique
+  kind        TrainingKind     @default(ROTEIRO)
+  scope       PromptScope
   prompt      String           @db.Text
   version     Int              @default(1)
   usageCount  Int              @default(0)
@@ -140,6 +146,9 @@ model TrainingPrompt {
   generations GenerationLog[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+
+  @@unique([kind, scope])
+  @@index([kind])
 }
 
 model PromptRevision {
@@ -158,6 +167,7 @@ model GenerationLog {
   id               String          @id @default(cuid())
   trainingPromptId String?
   trainingPrompt   TrainingPrompt? @relation(fields: [trainingPromptId], references: [id], onDelete: SetNull)
+  kind             TrainingKind    @default(ROTEIRO)
   scope            PromptScope
   promptVersion    Int?
   platform         String
