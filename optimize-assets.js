@@ -12,14 +12,17 @@ async function makeResponsiveHero() {
   for (const width of [720, 1320]) {
     const webp = path.join(assets, "hero-oficial-" + width + ".webp");
     const avif = path.join(assets, "hero-oficial-" + width + ".avif");
+
     await sharp(src)
-      .resize({ width: width, withoutEnlargement: true })
+      .resize({ width, withoutEnlargement: true })
       .webp({ quality: 78, alphaQuality: 84, effort: 5 })
       .toFile(webp);
+
     await sharp(src)
-      .resize({ width: width, withoutEnlargement: true })
+      .resize({ width, withoutEnlargement: true })
       .avif({ quality: 52, effort: 4, chromaSubsampling: "4:4:4" })
       .toFile(avif);
+
     outputs[width] = await sharp(webp).metadata();
   }
   return outputs;
@@ -66,15 +69,12 @@ async function getMeta(file) {
 
 function withDims(html, src, meta) {
   if (!meta || !meta.width || !meta.height) return html;
-  const escaped = src.replace(/[.*+?^$()|[\]\\]/g, "\\const escaped = src.replace(/[.*+?^$()|[\]\\]/g, "\\$&");
-  const re = new RegExp('<img([^>]*?)src=["\\']' + escaped + '["\\']([^>]*)>', "g");");
-  const re = new RegExp("<img([^>]*?)src=[\\\"']" + escaped + "[\\\"']([^>]*)>", "g");
-  return html.replace(re, function(tag) {
-    let next = tag
-      .replace(/\swidth=["'][^"']*["']/g, "")
-      .replace(/\sheight=["'][^"']*["']/g, "");
-    return next.replace(/>$/, ' width="' + meta.width + '" height="' + meta.height + '">');
-  });
+  const needle = 'src="' + src + '"';
+  const replacement =
+    needle +
+    ' width="' + meta.width + '"' +
+    ' height="' + meta.height + '"';
+  return html.split(needle).join(replacement);
 }
 
 function fileKb(name) {
@@ -95,11 +95,26 @@ function fileKb(name) {
     let html = fs.readFileSync(htmlPath, "utf8");
     html = withDims(html, "/assets/logo-oficial-360.webp", logo);
     html = withDims(html, "/assets/hero-oficial-1320.webp", hero[1320]);
+
     for (let i = 1; i <= 5; i++) {
-      html = withDims(html, "/assets/resultado-real-" + i + ".webp", proofs[i]);
+      html = withDims(
+        html,
+        "/assets/resultado-real-" + i + ".webp",
+        proofs[i]
+      );
     }
-    html = withDims(html, "/assets/lauro-renata-original.webp", lauro);
-    html = withDims(html, "/assets/samuel-original.webp", samuel);
+
+    html = withDims(
+      html,
+      "/assets/lauro-renata-original.webp",
+      lauro
+    );
+    html = withDims(
+      html,
+      "/assets/samuel-original.webp",
+      samuel
+    );
+
     fs.writeFileSync(htmlPath, html);
 
     console.log(
@@ -110,7 +125,18 @@ function fileKb(name) {
       "1320 AVIF", fileKb("hero-oficial-1320.avif") + " KB"
     );
     console.log("Logo:", fileKb("logo-oficial-360.webp") + " KB");
-    console.log("Poster:", poster ? fileKb("imersao-1-mes-em-1-dia-poster.webp") + " KB" : "não gerado");
+    console.log(
+      "Provas:",
+      [1,2,3,4,5]
+        .map((i) => fileKb("resultado-real-" + i + ".webp") + " KB")
+        .join(", ")
+    );
+    console.log(
+      "Poster:",
+      poster
+        ? fileKb("imersao-1-mes-em-1-dia-poster.webp") + " KB"
+        : "não gerado"
+    );
   } catch (err) {
     console.error(err);
     process.exit(1);
