@@ -1,6 +1,6 @@
 'use server';
 import { prisma } from '@/lib/db';
-import { Author, Category, ContentFormat, ContentStatus, Pillar, Platform } from '@prisma/client';
+import { Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -14,3 +14,37 @@ export async function createContent(formData:FormData){
 }
 export async function updateContent(id:string,formData:FormData){await prisma.content.update({where:{id},data:{scheduledAt:parseDate(formData.get('scheduledAt')),author:String(formData.get('author')) as Author,pillar:String(formData.get('pillar')) as Pillar,category:String(formData.get('category')) as Category,format:String(formData.get('format')) as ContentFormat,status:String(formData.get('status')) as ContentStatus,headline:String(formData.get('headline')||''),hook:String(formData.get('hook')||'')||null,ideaCore:String(formData.get('ideaCore')||'')||null,script:String(formData.get('script')||'')||null,caption:String(formData.get('caption')||'')||null,cta:String(formData.get('cta')||'')||null,editNotes:String(formData.get('editNotes')||'')||null,parentId:String(formData.get('parentId')||'')||null}});revalidatePath('/');revalidatePath('/calendario');revalidatePath('/conteudos');revalidatePath(`/conteudos/${id}`);}
 export async function updatePublication(id:string,formData:FormData){await prisma.publication.update({where:{id},data:{headline:String(formData.get('headline')||''),caption:String(formData.get('caption')||'')||null,cta:String(formData.get('cta')||'')||null,editNotes:String(formData.get('editNotes')||'')||null,seoTitle:String(formData.get('seoTitle')||'')||null,thumbnailHeadline:String(formData.get('thumbnailHeadline')||'')||null,keywordPrimary:String(formData.get('keywordPrimary')||'')||null,keywordsSecondary:String(formData.get('keywordsSecondary')||'').split(',').map(s=>s.trim()).filter(Boolean),description:String(formData.get('description')||'')||null}});revalidatePath('/conteudos');}
+
+
+export async function updateTrainingPrompt(formData:FormData){
+  const scope=String(formData.get('scope')||'') as PromptScope;
+  const prompt=String(formData.get('prompt')||'').trim();
+  if(!prompt)return;
+  await prisma.$transaction(async(tx)=>{
+    const current=await tx.trainingPrompt.findUnique({where:{scope}});
+    if(!current){
+      await tx.trainingPrompt.create({data:{scope,prompt,revisions:{create:{version:1,prompt}}}});
+      return;
+    }
+    if(current.prompt===prompt)return;
+    const next=current.version+1;
+    await tx.trainingPrompt.update({where:{id:current.id},data:{prompt,version:next}});
+    await tx.promptRevision.create({data:{trainingPromptId:current.id,version:next,prompt}});
+  });
+  revalidatePath('/treinamento-ia');
+}
+
+export async function restoreTrainingPromptRevision(formData:FormData){
+  const scope=String(formData.get('scope')||'') as PromptScope;
+  const revisionId=String(formData.get('revisionId')||'');
+  if(!revisionId)return;
+  await prisma.$transaction(async(tx)=>{
+    const current=await tx.trainingPrompt.findUnique({where:{scope}});
+    const revision=await tx.promptRevision.findUnique({where:{id:revisionId}});
+    if(!current||!revision||revision.trainingPromptId!==current.id)return;
+    const next=current.version+1;
+    await tx.trainingPrompt.update({where:{id:current.id},data:{prompt:revision.prompt,version:next}});
+    await tx.promptRevision.create({data:{trainingPromptId:current.id,version:next,prompt:revision.prompt}});
+  });
+  revalidatePath('/treinamento-ia');
+}
