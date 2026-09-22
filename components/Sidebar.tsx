@@ -12,22 +12,21 @@ const items=[
 
 export function Sidebar(){
   return <>
-    <header className="app-header">
-      <div className="app-header-inner">
-        <Link href="/" className="brand immersion-brand">
-          <strong>Freire Educação</strong>
-          <span>Content OS</span>
-        </Link>
+    <aside className="sidebar">
+      <Link href="/" className="brand">
+        <strong>Freire Educação</strong>
+        <span>Gerador de conteúdo para redes sociais</span>
+      </Link>
 
-        <nav className="nav desktop-nav">
-          {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
-        </nav>
+      <nav className="nav">
+        {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
+      </nav>
 
-        <div className="header-kicker">
-          Conteúdo com estrutura
-        </div>
+      <div className="sidebar-footer">
+        <span>1 ideia → vários ativos.</span>
+        <span>Empresa como plataforma.</span>
       </div>
-    </header>
+    </aside>
 
     <nav className="mobile-nav">
       {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
