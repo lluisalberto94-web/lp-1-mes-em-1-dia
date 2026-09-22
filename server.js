@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -14,13 +15,20 @@ const types = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
+  ".avif": "image/avif",
   ".mp4": "video/mp4"
 };
 
-function sendFile(req, res, filePath, stat) {
+function cacheFor(urlPath, ext) {
+  if (ext === ".html") return "no-cache, no-store, must-revalidate";
+  if (urlPath.startsWith("/assets/")) return "public, max-age=31536000, immutable";
+  return "public, max-age=86400";
+}
+
+function sendFile(req, res, filePath, stat, urlPath) {
   const ext = path.extname(filePath).toLowerCase();
   const type = types[ext] || "application/octet-stream";
-  const cacheControl = ext === ".html" ? "no-cache" : "public, max-age=3600";
+  const cacheControl = cacheFor(urlPath, ext);
 
   if (ext === ".mp4" && req.headers.range) {
     const range = req.headers.range.replace(/bytes=/, "").split("-");
@@ -40,16 +48,32 @@ function sendFile(req, res, filePath, stat) {
       "Content-Type": type,
       "Cache-Control": cacheControl
     });
-
     return fs.createReadStream(filePath, { start, end }).pipe(res);
   }
 
-  res.writeHead(200, {
+  const isText = [".html", ".css", ".js", ".svg"].includes(ext);
+  const accept = req.headers["accept-encoding"] || "";
+  const headers = {
     "Content-Type": type,
-    "Content-Length": stat.size,
     "Cache-Control": cacheControl,
+    "Vary": isText ? "Accept-Encoding" : undefined,
     ...(ext === ".mp4" ? { "Accept-Ranges": "bytes" } : {})
-  });
+  };
+  Object.keys(headers).forEach((k) => headers[k] === undefined && delete headers[k]);
+
+  if (isText && accept.includes("br")) {
+    res.writeHead(200, { ...headers, "Content-Encoding": "br" });
+    return fs.createReadStream(filePath)
+      .pipe(zlib.createBrotliCompress({ params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 4 } }))
+      .pipe(res);
+  }
+
+  if (isText && accept.includes("gzip")) {
+    res.writeHead(200, { ...headers, "Content-Encoding": "gzip" });
+    return fs.createReadStream(filePath).pipe(zlib.createGzip({ level: 6 })).pipe(res);
+  }
+
+  res.writeHead(200, { ...headers, "Content-Length": stat.size });
   fs.createReadStream(filePath).pipe(res);
 }
 
@@ -71,11 +95,11 @@ http.createServer((req, res) => {
           res.writeHead(404);
           return res.end("Not found");
         }
-        sendFile(req, res, filePath, fallbackStat);
+        sendFile(req, res, filePath, fallbackStat, "/index.html");
       });
     }
 
-    sendFile(req, res, filePath, stat);
+    sendFile(req, res, filePath, stat, urlPath);
   });
 }).listen(port, "0.0.0.0", () => {
   console.log("LP rodando na porta " + port);
