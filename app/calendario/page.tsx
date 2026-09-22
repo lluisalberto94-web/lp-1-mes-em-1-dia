@@ -65,13 +65,13 @@ export default async function Calendar({searchParams}:{searchParams:Promise<{day
         {contents.length?contents.map(c=>{
           const d=c.scheduledAt||start;
           return <div className="calendar-list-row" key={c.id}>
-            <span className="calendar-list-date">{formatDate(d)}</span>
-            <span className="small muted">{dayLabel(d)}</span>
-            <Link className="calendar-list-title" href={`/conteudos/${c.id}`}>{c.headline}</Link>
-            <span>{authorLabel[c.author]}</span>
-            <span>{pillarLabel[c.pillar]}</span>
-            <span>{c.publications.map(p=>p.platform.replace('YOUTUBE_SHORTS','SHORTS')).join(' · ')||'—'}</span>
-            <StatusSelect id={c.id} value={c.status}/>
+            <span className="calendar-list-date" data-label="Data">{formatDate(d)}</span>
+            <span className="small muted" data-label="Dia">{dayLabel(d)}</span>
+            <Link className="calendar-list-title" data-label="Título" href={`/conteudos/${c.id}`}>{c.headline}</Link>
+            <span data-label="Autor">{authorLabel[c.author]}</span>
+            <span data-label="Pilar">{pillarLabel[c.pillar]}</span>
+            <span data-label="Plataforma">{c.publications.map(p=>p.platform.replace('YOUTUBE_SHORTS','SHORTS')).join(' · ')||'—'}</span>
+            <div className="calendar-list-status" data-label="Status"><StatusSelect id={c.id} value={c.status}/></div>
           </div>
         }):<div className="empty">Nenhum conteúdo programado neste período.</div>}
       </div>
