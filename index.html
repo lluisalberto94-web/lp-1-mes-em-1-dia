@@ -375,7 +375,42 @@ document.querySelectorAll('[data-open-form]').forEach(function(b){b.addEventList
 function maskTel(input){input.addEventListener('input',function(){var v=this.value.replace(/\D/g,'').slice(0,11);if(v.length>10)this.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>6)this.value='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);else if(v.length>2)this.value='('+v.slice(0,2)+') '+v.slice(2);else this.value=v})}
 document.querySelectorAll('input[name="telefone"]').forEach(maskTel);
 var qs=new URLSearchParams(location.search);document.querySelectorAll('input[name^="utm_"]').forEach(function(el){el.value=qs.get(el.name)||''});
-document.querySelectorAll('[data-lead-form]').forEach(function(form){form.addEventListener('submit',function(e){e.preventDefault();window.location.href='/obrigado.html'})});
+document.querySelectorAll('[data-lead-form]').forEach(function(form){
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    if(!form.reportValidity())return;
+
+    var button=form.querySelector('button[type="submit"]');
+    var originalText=button?button.textContent:'';
+    if(button){button.disabled=true;button.textContent='ENVIANDO...';}
+
+    var fd=new FormData(form);
+    var payload={
+      nome:String(fd.get('nome')||'').trim(),
+      telefone:String(fd.get('telefone')||'').trim(),
+      utm_source:String(fd.get('utm_source')||''),
+      utm_medium:String(fd.get('utm_medium')||''),
+      utm_campaign:String(fd.get('utm_campaign')||'')
+    };
+
+    try{
+      var response=await fetch('/api/lead',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      var result={};
+      try{result=await response.json()}catch(_){}
+      if(!response.ok||result.ok===false)throw new Error(result.error||'Falha ao enviar');
+
+      window.location.href='https://api.whatsapp.com/send/?phone=5511930468463&text=Ol%C3%A1,%20acessei%20o%20site%20e%20tenho%20interesse%20na%20imers%C3%A3o%201%20m%C3%AAs%20em%201%20dia';
+    }catch(err){
+      console.error('Erro no envio do formulário:',err);
+      alert('Não foi possível enviar seus dados agora. Tente novamente em alguns segundos.');
+      if(button){button.disabled=false;button.textContent=originalText;}
+    }
+  });
+});
 function initProofCarousel(){var carousel=document.getElementById('proofCarousel');if(!carousel)return;var track=document.getElementById('proofTrack'),slides=[].slice.call(track.querySelectorAll('.proof-slide')),dots=document.getElementById('proofDots'),prev=document.getElementById('proofPrev'),next=document.getElementById('proofNext'),index=0,timer,touchStart=0,paused=false;function perView(){if(innerWidth>=981)return 3;if(innerWidth>=681)return 2;return 1}function maxIndex(){return Math.max(0,slides.length-perView())}function buildDots(){dots.innerHTML='';for(var i=0;i<=maxIndex();i++){var b=document.createElement('button');b.type='button';b.className='proof-dot';b.setAttribute('aria-label','Ir para prova '+(i+1));(function(n){b.onclick=function(){index=n;update();restart()}})(i);dots.appendChild(b)}}function update(){var gap=parseFloat(getComputedStyle(track).gap)||20;var step=(slides[0]?slides[0].getBoundingClientRect().width:0)+gap;index=Math.max(0,Math.min(index,maxIndex()));track.style.transform='translate3d('+(-index*step)+'px,0,0)';slides.forEach(function(s){s.classList.remove('is-active')});var c=index+Math.floor((perView()-1)/2);if(slides[c])slides[c].classList.add('is-active');[].slice.call(dots.children).forEach(function(d,i){d.classList.toggle('is-active',i===index)})}function advance(){index=index>=maxIndex()?0:index+1;update()}function stop(){if(timer){clearInterval(timer);timer=null}}function start(){stop();if(!paused)timer=setInterval(advance,4200)}function restart(){stop();setTimeout(start,150)}prev.onclick=function(){index=index<=0?maxIndex():index-1;update();restart()};next.onclick=function(){advance();restart()};carousel.addEventListener('mouseenter',function(){paused=true;stop()});carousel.addEventListener('mouseleave',function(){paused=false;start()});carousel.addEventListener('touchstart',function(e){touchStart=e.touches[0].clientX;paused=true;stop()},{passive:true});carousel.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-touchStart;if(Math.abs(d)>45){if(d<0)advance();else{index=index<=0?maxIndex():index-1;update()}}paused=false;start()},{passive:true});addEventListener('resize',function(){index=Math.min(index,maxIndex());buildDots();update();restart()});buildDots();update();start()}
 var proofCarouselEl=document.getElementById('proofCarousel');
 if(proofCarouselEl){if('IntersectionObserver' in window){var proofIo=new IntersectionObserver(function(entries){if(entries[0]&&entries[0].isIntersecting){proofIo.disconnect();initProofCarousel()}},{rootMargin:'500px 0px'});proofIo.observe(proofCarouselEl)}else{setTimeout(initProofCarousel,0)}}
