@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Author {
+  LAURO
+  RENATA
+  CASAL
+}
+
+enum Pillar {
+  NEGOCIOS
+  MARKETING
+  LIDERANCA
+  FE
+  MATRIMONIO
+  PROSPERIDADE
+}
+
+enum Category {
+  IDENTIDADE
+  CAPACIDADE
+  MERECIMENTO
+}
+
+enum ContentStatus {
+  IDEIA
+  ROTEIRO
+  GRAVAR
+  GRAVADO
+  EDITANDO
+  APROVACAO
+  AGENDADO
+  PUBLICADO
+}
+
+enum ContentFormat {
+  REEL
+  TIKTOK
+  SHORT
+  VIDEO_LONGO
+  CARROSSEL
+  STORIES
+  FOTO
+  CORTE
+}
+
+enum Platform {
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  YOUTUBE_SHORTS
+}
+
+model Content {
+  id          String        @id @default(cuid())
+  scheduledAt DateTime?
+  author      Author
+  pillar      Pillar
+  category    Category
+  format      ContentFormat
+  status      ContentStatus @default(IDEIA)
+  headline    String
+  hook        String?       @db.Text
+  ideaCore    String?       @db.Text
+  script      String?       @db.Text
+  caption     String?       @db.Text
+  cta         String?       @db.Text
+  editNotes   String?       @db.Text
+  parentId    String?
+  parent      Content?      @relation("ContentDerivatives", fields: [parentId], references: [id], onDelete: SetNull)
+  derivatives Content[]     @relation("ContentDerivatives")
+  publications Publication[]
+  promotedIdeas Idea[]      @relation("PromotedIdea")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([scheduledAt])
+  @@index([status])
+  @@index([author])
+  @@index([pillar])
+}
+
+model Publication {
+  id                 String   @id @default(cuid())
+  contentId          String
+  content            Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  platform           Platform
+  headline           String
+  caption            String?  @db.Text
+  cta                String?  @db.Text
+  editNotes          String?  @db.Text
+  seoTitle           String?
+  thumbnailHeadline  String?
+  keywordPrimary     String?
+  keywordsSecondary  String[] @default([])
+  description        String?  @db.Text
+  chapters           Json?
+  sourceOrigin       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([contentId, platform])
+  @@index([platform])
+}
+
+model Idea {
+  id                String   @id @default(cuid())
+  title             String
+  notes             String?  @db.Text
+  author            Author?
+  pillar            Pillar?
+  promotedContentId String?
+  promotedContent   Content? @relation("PromotedIdea", fields: [promotedContentId], references: [id], onDelete: SetNull)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
