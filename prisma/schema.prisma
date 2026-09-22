@@ -147,7 +147,7 @@ model TrainingPrompt {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
-  @@unique([kind, scope])
+  @@index([kind, scope])
   @@index([kind])
 }
 
