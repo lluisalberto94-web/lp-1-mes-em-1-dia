@@ -1,4 +1,4 @@
-import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform } from '@prisma/client';
+import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const assert = (condition: unknown, message: string) => {
@@ -8,6 +8,10 @@ const assert = (condition: unknown, message: string) => {
 async function main() {
   const initialCount = await prisma.content.count();
   assert(initialCount >= 14, `expected at least 14 seeded contents, found ${initialCount}`);
+  const trainings = await prisma.trainingPrompt.findMany();
+  assert(trainings.length === 5, `expected 5 training prompts, found ${trainings.length}`);
+  assert(trainings.some((t) => t.scope === PromptScope.INSTAGRAM), 'Instagram training prompt missing');
+  assert(trainings.some((t) => t.scope === PromptScope.MULTIPLATAFORMA), 'Multiplatform training prompt missing');
 
   const existingParent = await prisma.content.findFirst({
     where: { derivatives: { some: {} } },
@@ -19,6 +23,7 @@ async function main() {
   let parentId = '';
   let childId = '';
   let ideaId = '';
+  let generationId = '';
 
   try {
     const parent = await prisma.content.create({
@@ -86,6 +91,20 @@ async function main() {
     assert(relation?.derivatives.some((c) => c.id === childId), 'parent/derived relation failed');
     assert(relation?.promotedIdeas.some((i) => i.id === ideaId), 'idea-to-content promotion relation failed');
 
+    const instagramTraining = await prisma.trainingPrompt.findUnique({ where: { scope: PromptScope.INSTAGRAM } });
+    assert(instagramTraining, 'training lookup failed');
+    const generation = await prisma.generationLog.create({
+      data: {
+        trainingPromptId: instagramTraining!.id,
+        scope: PromptScope.INSTAGRAM,
+        promptVersion: instagramTraining!.version,
+        platform: 'INSTAGRAM',
+        idea: marker,
+      },
+    });
+    generationId = generation.id;
+    assert(generation.promptVersion === instagramTraining!.version, 'generation prompt version not recorded');
+
     console.log(JSON.stringify({
       smoke: 'PASS',
       seededContents: initialCount,
@@ -98,8 +117,11 @@ async function main() {
       filters: true,
       search: true,
       parentDerivatives: true,
+      trainingPrompts: trainings.length,
+      generationTrainingVersion: true,
     }));
   } finally {
+    if (generationId) await prisma.generationLog.delete({ where: { id: generationId } }).catch(() => undefined);
     if (ideaId) await prisma.idea.delete({ where: { id: ideaId } }).catch(() => undefined);
     if (childId) await prisma.content.delete({ where: { id: childId } }).catch(() => undefined);
     if (parentId) await prisma.content.delete({ where: { id: parentId } }).catch(() => undefined);
