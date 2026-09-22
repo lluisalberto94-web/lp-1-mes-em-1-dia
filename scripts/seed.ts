@@ -22,7 +22,7 @@ async function seedTraining(){
   for(const kind of Object.values(TrainingKind) as TrainingKind[]){
     for(const scope of Object.values(PromptScope) as PromptScope[]){
       const prompt=getDefaultTrainingPrompt(kind,scope);
-      const existing=await prisma.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
+      const existing=await prisma.trainingPrompt.findFirst({where:{kind,scope}});
       if(!existing){
         await prisma.trainingPrompt.create({data:{kind,scope,prompt,revisions:{create:{version:1,prompt}}}});
       }
