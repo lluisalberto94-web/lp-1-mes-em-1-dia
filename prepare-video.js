@@ -52,24 +52,24 @@ function runFfmpeg(args, label) {
     runFfmpeg([
       "-y",
       "-i", sourcePath,
-      "-vf", "scale=1920:-2",
+      "-vf", "scale=1280:-2",
       "-c:v", "libx264",
       "-preset", "veryfast",
-      "-crf", "24",
+      "-crf", "26",
       "-pix_fmt", "yuv420p",
       "-c:a", "aac",
-      "-b:a", "128k",
+      "-b:a", "96k",
       "-movflags", "+faststart",
       outputPath
-    ], "Convertendo vídeo para MP4/H.264 otimizado para web...");
+    ], "Convertendo vídeo para MP4/H.264 720p otimizado para web...");
 
     runFfmpeg([
       "-y",
       "-ss", "00:00:03",
       "-i", outputPath,
       "-frames:v", "1",
-      "-vf", "scale=1280:-2",
-      "-q:v", "3",
+      "-vf", "scale=960:-2",
+      "-q:v", "4",
       posterPath
     ], "Gerando capa do vídeo...");
 
