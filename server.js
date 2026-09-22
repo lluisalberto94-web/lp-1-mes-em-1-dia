@@ -1,10 +1,12 @@
 const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
+const crmWebhookUrl = "https://wh.upviewcrm.com/api/webhooks/inbound/lead/freire-educacao/lp-imersao-luis";
 
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -77,8 +79,99 @@ function sendFile(req, res, filePath, stat, urlPath) {
   fs.createReadStream(filePath).pipe(res);
 }
 
+
+function handleLead(req, res) {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk;
+    if (body.length > 65536) req.destroy();
+  });
+
+  req.on("end", () => {
+    let data;
+    try {
+      data = JSON.parse(body || "{}");
+    } catch {
+      res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+      return res.end(JSON.stringify({ ok: false, error: "Payload inválido" }));
+    }
+
+    const nome = String(data.nome || "").trim();
+    const telefone = String(data.telefone || "").trim();
+
+    if (!nome || !telefone) {
+      res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+      return res.end(JSON.stringify({ ok: false, error: "Nome e WhatsApp são obrigatórios" }));
+    }
+
+    const payload = JSON.stringify({
+      nome,
+      telefone,
+      utm_source: String(data.utm_source || ""),
+      utm_medium: String(data.utm_medium || ""),
+      utm_campaign: String(data.utm_campaign || "")
+    });
+
+    const target = new URL(crmWebhookUrl);
+    const upstream = https.request(
+      {
+        protocol: target.protocol,
+        hostname: target.hostname,
+        port: target.port || 443,
+        path: target.pathname + target.search,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(payload),
+          "Accept": "application/json, text/plain, */*"
+        },
+        timeout: 10000
+      },
+      (upstreamRes) => {
+        let upstreamBody = "";
+        upstreamRes.on("data", (chunk) => {
+          upstreamBody += chunk;
+          if (upstreamBody.length > 32768) upstreamBody = upstreamBody.slice(0, 32768);
+        });
+        upstreamRes.on("end", () => {
+          const ok = upstreamRes.statusCode >= 200 && upstreamRes.statusCode < 300;
+          res.writeHead(ok ? 200 : 502, { "Content-Type": "application/json; charset=utf-8" });
+          res.end(JSON.stringify({
+            ok,
+            status: upstreamRes.statusCode,
+            error: ok ? undefined : "O CRM não confirmou o recebimento do lead"
+          }));
+        });
+      }
+    );
+
+    upstream.on("timeout", () => upstream.destroy(new Error("Webhook timeout")));
+    upstream.on("error", (err) => {
+      console.error("Erro ao enviar lead para o CRM:", err.message);
+      if (!res.headersSent) {
+        res.writeHead(502, { "Content-Type": "application/json; charset=utf-8" });
+        res.end(JSON.stringify({ ok: false, error: "Não foi possível enviar o lead ao CRM" }));
+      }
+    });
+
+    upstream.write(payload);
+    upstream.end();
+  });
+
+  req.on("error", () => {
+    if (!res.headersSent) {
+      res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ ok: false, error: "Falha ao receber os dados" }));
+    }
+  });
+}
+
 http.createServer((req, res) => {
   let urlPath = decodeURIComponent(req.url.split("?")[0]);
+
+  if (req.method === "POST" && urlPath === "/api/lead") {
+    return handleLead(req, res);
+  }
   if (urlPath === "/") urlPath = "/index.html";
 
   let filePath = path.join(root, urlPath);
