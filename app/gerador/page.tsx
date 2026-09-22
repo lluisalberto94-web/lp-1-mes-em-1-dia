@@ -1,2 +1,2 @@
-import { Generator } from '@/components/Generator';
-export default async function GeneratorPage({searchParams}:{searchParams:Promise<{idea?:string,ideaId?:string}>}){const params=await searchParams;return <div className="content"><div className="page-head"><div><div className="eyebrow">Gerador</div><h1>Da ideia ao ativo.</h1><p>Selecione a plataforma e o sistema aplica automaticamente o treinamento estratégico ativo daquele canal.</p></div><a className="button secondary" href="/treinamento-ia">Editar treinamento IA</a></div><Generator initialIdea={params.idea||''} ideaId={params.ideaId}/></div>}
+import { redirect } from 'next/navigation';
+export default function LegacyGeneratorPage(){redirect('/gerador-roteiros');}
