@@ -66,8 +66,9 @@ async function getMeta(file) {
 
 function withDims(html, src, meta) {
   if (!meta || !meta.width || !meta.height) return html;
-  const escaped = src.replace(/[.*+?^$()|[\]\\]/g, "\\$&");
-  const re = new RegExp('<img([^>]*?)src=["\\']' + escaped + '["\\']([^>]*)>', "g");
+  const escaped = src.replace(/[.*+?^$()|[\]\\]/g, "\\const escaped = src.replace(/[.*+?^$()|[\]\\]/g, "\\$&");
+  const re = new RegExp('<img([^>]*?)src=["\\']' + escaped + '["\\']([^>]*)>', "g");");
+  const re = new RegExp("<img([^>]*?)src=[\\\"']" + escaped + "[\\\"']([^>]*)>", "g");
   return html.replace(re, function(tag) {
     let next = tag
       .replace(/\swidth=["'][^"']*["']/g, "")
