@@ -8,6 +8,7 @@ const sourceUrl = "https://1mesemumdia.com/wp-content/uploads/2025/07/Trazer-2-P
 const assetsDir = path.join(__dirname, "assets");
 const sourcePath = path.join("/tmp", "imersao-source.mov");
 const outputPath = path.join(assetsDir, "imersao-1-mes-em-1-dia.mp4");
+const posterPath = path.join(assetsDir, "imersao-1-mes-em-1-dia-poster.jpg");
 
 fs.mkdirSync(assetsDir, { recursive: true });
 
@@ -15,9 +16,7 @@ function download(url, dest, redirects = 0) {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error("Muitos redirecionamentos ao baixar o vídeo."));
     const file = fs.createWriteStream(dest);
-    const req = https.get(url, {
-      headers: { "User-Agent": "Mozilla/5.0" }
-    }, (res) => {
+    const req = https.get(url, { headers: { "User-Agent": "Mozilla/5.0" } }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         file.close();
         fs.unlink(dest, () => {});
@@ -39,13 +38,18 @@ function download(url, dest, redirects = 0) {
   });
 }
 
+function runFfmpeg(args, label) {
+  console.log(label);
+  const result = spawnSync(ffmpegPath, args, { stdio: "inherit" });
+  if (result.status !== 0) throw new Error("FFmpeg terminou com código " + result.status);
+}
+
 (async () => {
   try {
     console.log("Baixando vídeo original...");
     await download(sourceUrl, sourcePath);
 
-    console.log("Convertendo vídeo para MP4/H.264 otimizado para web...");
-    const result = spawnSync(ffmpegPath, [
+    runFfmpeg([
       "-y",
       "-i", sourcePath,
       "-vf", "scale=1920:-2",
@@ -57,11 +61,17 @@ function download(url, dest, redirects = 0) {
       "-b:a", "128k",
       "-movflags", "+faststart",
       outputPath
-    ], { stdio: "inherit" });
+    ], "Convertendo vídeo para MP4/H.264 otimizado para web...");
 
-    if (result.status !== 0) {
-      throw new Error("FFmpeg terminou com código " + result.status);
-    }
+    runFfmpeg([
+      "-y",
+      "-ss", "00:00:03",
+      "-i", outputPath,
+      "-frames:v", "1",
+      "-vf", "scale=1280:-2",
+      "-q:v", "3",
+      posterPath
+    ], "Gerando capa do vídeo...");
 
     const sizeMb = (fs.statSync(outputPath).size / 1024 / 1024).toFixed(1);
     console.log("Vídeo pronto: " + outputPath + " (" + sizeMb + " MB)");
