@@ -1,6 +1,6 @@
 'use server';
 import { prisma } from '@/lib/db';
-import { Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope } from '@prisma/client';
+import { Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope, TrainingKind } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -17,13 +17,14 @@ export async function updatePublication(id:string,formData:FormData){await prism
 
 
 export async function updateTrainingPrompt(formData:FormData){
+  const kind=String(formData.get('kind')||'ROTEIRO') as TrainingKind;
   const scope=String(formData.get('scope')||'') as PromptScope;
   const prompt=String(formData.get('prompt')||'').trim();
   if(!prompt)return;
   await prisma.$transaction(async(tx)=>{
-    const current=await tx.trainingPrompt.findUnique({where:{scope}});
+    const current=await tx.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
     if(!current){
-      await tx.trainingPrompt.create({data:{scope,prompt,revisions:{create:{version:1,prompt}}}});
+      await tx.trainingPrompt.create({data:{kind,scope,prompt,revisions:{create:{version:1,prompt}}}});
       return;
     }
     if(current.prompt===prompt)return;
@@ -35,11 +36,12 @@ export async function updateTrainingPrompt(formData:FormData){
 }
 
 export async function restoreTrainingPromptRevision(formData:FormData){
+  const kind=String(formData.get('kind')||'ROTEIRO') as TrainingKind;
   const scope=String(formData.get('scope')||'') as PromptScope;
   const revisionId=String(formData.get('revisionId')||'');
   if(!revisionId)return;
   await prisma.$transaction(async(tx)=>{
-    const current=await tx.trainingPrompt.findUnique({where:{scope}});
+    const current=await tx.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
     const revision=await tx.promptRevision.findUnique({where:{id:revisionId}});
     if(!current||!revision||revision.trainingPromptId!==current.id)return;
     const next=current.version+1;
