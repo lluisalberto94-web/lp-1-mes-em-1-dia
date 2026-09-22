@@ -99,7 +99,7 @@ export async function POST(req:Request){
   const scope=scopeFromPlatform(body.platform);
   const defaultPrompt=getDefaultTrainingPrompt(kind,scope);
 
-  let training=await prisma.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
+  let training=await prisma.trainingPrompt.findFirst({where:{kind,scope}});
   if(!training){
     training=await prisma.trainingPrompt.create({data:{kind,scope,prompt:defaultPrompt,revisions:{create:{version:1,prompt:defaultPrompt}}}});
   }
