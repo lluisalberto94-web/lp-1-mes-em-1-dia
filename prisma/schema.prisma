@@ -57,6 +57,14 @@ enum Platform {
   YOUTUBE_SHORTS
 }
 
+enum PromptScope {
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  SHORTS
+  MULTIPLATAFORMA
+}
+
 model Content {
   id          String        @id @default(cuid())
   scheduledAt DateTime?
@@ -119,4 +127,46 @@ model Idea {
   promotedContent   Content? @relation("PromotedIdea", fields: [promotedContentId], references: [id], onDelete: SetNull)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+}
+
+
+model TrainingPrompt {
+  id          String           @id @default(cuid())
+  scope       PromptScope      @unique
+  prompt      String           @db.Text
+  version     Int              @default(1)
+  usageCount  Int              @default(0)
+  revisions   PromptRevision[]
+  generations GenerationLog[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model PromptRevision {
+  id               String         @id @default(cuid())
+  trainingPromptId String
+  trainingPrompt   TrainingPrompt @relation(fields: [trainingPromptId], references: [id], onDelete: Cascade)
+  version          Int
+  prompt           String         @db.Text
+  createdAt        DateTime       @default(now())
+
+  @@unique([trainingPromptId, version])
+  @@index([trainingPromptId])
+}
+
+model GenerationLog {
+  id               String          @id @default(cuid())
+  trainingPromptId String?
+  trainingPrompt   TrainingPrompt? @relation(fields: [trainingPromptId], references: [id], onDelete: SetNull)
+  scope            PromptScope
+  promptVersion    Int?
+  platform         String
+  author           String?
+  pillar           String?
+  objective        String?
+  idea             String?         @db.Text
+  createdAt        DateTime        @default(now())
+
+  @@index([scope])
+  @@index([createdAt])
 }
