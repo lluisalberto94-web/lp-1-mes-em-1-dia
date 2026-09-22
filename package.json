@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "node prepare-video.js",
+    "postinstall": "node prepare-video.js && node optimize-assets.js",
     "start": "node server.js"
   },
   "dependencies": {
-    "ffmpeg-static": "5.2.0"
+    "ffmpeg-static": "5.2.0",
+    "sharp": "^0.34.3"
   }
 }
