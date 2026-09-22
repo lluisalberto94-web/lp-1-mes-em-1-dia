@@ -1,31 +1,80 @@
 import { NextResponse } from 'next/server';
+import { TrainingKind } from '@prisma/client';
 import { prisma } from '@/lib/db';
-import { defaultTrainingPrompts, promptScopeLabels, scopeFromPlatform } from '@/lib/training';
+import { getDefaultTrainingPrompt, promptScopeLabels, scopeFromPlatform } from '@/lib/training';
 
 const tags:Record<string,string[]>={NEGOCIOS:['#GestaoDeClinicas','#Empreendedorismo','#Processos'],MARKETING:['#MarketingOdontologico','#GestaoComercial','#Vendas'],LIDERANCA:['#Lideranca','#GestaoDePessoas','#Processos'],FE:['#Principios','#Lideranca','#Empreendedorismo'],MATRIMONIO:['#Familia','#Empreendedorismo','#Lideranca'],PROSPERIDADE:['#Prosperidade','#Empreendedorismo','#GestaoDeClinicas']};
 const localStrategy:Record<string,string>={INSTAGRAM:'Priorize uma abertura visual forte, identificação, salvamento e compartilhamento.',TIKTOK:'Entre direto no assunto, use linguagem falada e ritmo de descoberta.',YOUTUBE:'Construa promessa, progressão, profundidade, capítulos e embalagem para busca + clique.',SHORTS:'Use uma única tese, gancho imediato e payoff rápido.',MULTIPLATAFORMA:'Pense primeiro na tese central e adapte embalagem e CTA por canal sem exigir nova gravação.'};
 
-function fallback(body:any,training:{scope:string;version:number;prompt:string}){const idea=body.idea||'crescimento com estrutura';const who=body.author==='RENATA'?'Renata':body.author==='CASAL'?'Lauro e Renata':'Lauro';const h1=`${idea.replace(/^[a-z]/, (m:string)=>m.toUpperCase())}`;const strategy=localStrategy[body.platform]||localStrategy.MULTIPLATAFORMA;return {mode:'structured-fallback',training:{scope:training.scope,label:promptScopeLabels[training.scope as keyof typeof promptScopeLabels],version:training.version},headlines:[h1,`O erro por trás de ${idea.toLowerCase()}`,`Se você é dono de clínica, preste atenção nisso`],hook:`Para aí rapidinho: se ${idea.toLowerCase()} ainda depende de improviso, você precisa olhar para isso.`,ideaCore:`Transformar ${idea.toLowerCase()} em uma decisão prática, conectando o tema à realidade do dono de clínica. ${strategy}`,script:`GANCHO\nPara aí rapidinho...\n\nPROBLEMA\nMostre o custo do improviso na rotina da clínica.\n\nDESENVOLVIMENTO\n${who} explica o princípio e conecta marketing, comercial, gestão, processos e pessoas quando fizer sentido.\n\nEXEMPLO\nUse uma situação concreta de clínica ou bastidor empresarial.\n\nCONCLUSÃO\nEstrutura reduz dependência do dono e melhora a qualidade da execução.`,cta:'Salve este conteúdo e envie para um empresário que precisa estruturar a operação.',instagram:`${h1}\n\nCrescimento não pode depender de um mês bom ou de uma ação isolada. Estrutura é o que transforma esforço em previsibilidade.`,tiktok:`${h1}. Direto ao ponto: menos improviso, mais processo.`,hashtags:tags[body.pillar]||['#GestaoDeClinicas','#Empreendedorismo','#Processos'],editNotes:'Começar sem vinheta. Corte seco. Headline nos primeiros 2 segundos. Legenda dinâmica. Usar B-roll real da clínica quando houver.',youtube:body.platform==='YOUTUBE'?{title:`${h1}: o que donos de clínica precisam entender`,alternatives:[`Por que ${idea.toLowerCase()} trava sua clínica`,`Como estruturar ${idea.toLowerCase()} sem virar gargalo`,`O sistema por trás de ${idea.toLowerCase()}`],thumbnail:'VOCÊ VIROU O GARGALO',keyword:idea.toLowerCase(),secondary:['gestão de clínicas','processos','crescimento'],description:`Uma análise prática sobre ${idea.toLowerCase()} aplicada à gestão de clínicas.`,chapters:['00:00 Contexto','02:00 O problema','06:00 O sistema','12:00 Como aplicar'],cuts:['3 sinais de improviso','O dono virou gargalo','Marketing sem comercial','Processo que reduz retrabalho','A decisão que muda a operação']}:null,short:body.platform==='SHORTS'?{title:h1,headline:'MENOS IMPROVISO',description:`Um princípio rápido sobre ${idea.toLowerCase()}.`,keyword:idea.toLowerCase(),cta:'Salve para revisar depois.'}:null};}
+function fallback(body:any,training:{scope:string;version:number;prompt:string}){
+  const idea=body.idea||'crescimento com estrutura';
+  const who=body.author==='RENATA'?'Renata':body.author==='CASAL'?'Lauro e Renata':'Lauro';
+  const h1=`${idea.replace(/^[a-z]/, (m:string)=>m.toUpperCase())}`;
+  const strategy=localStrategy[body.platform]||localStrategy.MULTIPLATAFORMA;
+  return {
+    mode:'structured-fallback',
+    training:{kind:'ROTEIRO',scope:training.scope,label:promptScopeLabels[training.scope as keyof typeof promptScopeLabels],version:training.version},
+    headlines:[h1,`O erro por trás de ${idea.toLowerCase()}`,`Se você é dono de clínica, preste atenção nisso`],
+    hook:`Para aí rapidinho: se ${idea.toLowerCase()} ainda depende de improviso, você precisa olhar para isso.`,
+    ideaCore:`Transformar ${idea.toLowerCase()} em uma decisão prática, conectando o tema à realidade do dono de clínica. ${strategy}`,
+    script:`GANCHO\nPara aí rapidinho...\n\nPROBLEMA\nMostre o custo do improviso na rotina da clínica.\n\nDESENVOLVIMENTO\n${who} explica o princípio e conecta marketing, comercial, gestão, processos e pessoas quando fizer sentido.\n\nEXEMPLO\nUse uma situação concreta de clínica ou bastidor empresarial.\n\nCONCLUSÃO\nEstrutura reduz dependência do dono e melhora a qualidade da execução.`,
+    cta:'Salve este conteúdo e envie para um empresário que precisa estruturar a operação.',
+    instagram:`${h1}\n\nCrescimento não pode depender de um mês bom ou de uma ação isolada. Estrutura é o que transforma esforço em previsibilidade.`,
+    tiktok:`${h1}. Direto ao ponto: menos improviso, mais processo.`,
+    hashtags:tags[body.pillar]||['#GestaoDeClinicas','#Empreendedorismo','#Processos'],
+    editNotes:'Começar sem vinheta. Corte seco. Headline nos primeiros 2 segundos. Legenda dinâmica. Usar B-roll real da clínica quando houver.',
+    youtube:body.platform==='YOUTUBE'?{
+      title:`${h1}: o que donos de clínica precisam entender`,
+      alternatives:[`Por que ${idea.toLowerCase()} trava sua clínica`,`Como estruturar ${idea.toLowerCase()} sem virar gargalo`,`O sistema por trás de ${idea.toLowerCase()}`],
+      thumbnail:'VOCÊ VIROU O GARGALO',
+      keyword:idea.toLowerCase(),
+      secondary:['gestão de clínicas','processos','crescimento'],
+      description:`Uma análise prática sobre ${idea.toLowerCase()} aplicada à gestão de clínicas.`,
+      chapters:['00:00 Contexto','02:00 O problema','06:00 O sistema','12:00 Como aplicar'],
+      cuts:['3 sinais de improviso','O dono virou gargalo','Marketing sem comercial','Processo que reduz retrabalho','A decisão que muda a operação']
+    }:null,
+    short:body.platform==='SHORTS'?{title:h1,headline:'MENOS IMPROVISO',description:`Um princípio rápido sobre ${idea.toLowerCase()}.`,keyword:idea.toLowerCase(),cta:'Salve para revisar depois.'}:null
+  };
+}
 
 export async function POST(req:Request){
   const body=await req.json();
+  const kind=TrainingKind.ROTEIRO;
   const scope=scopeFromPlatform(body.platform);
-  let training=await prisma.trainingPrompt.findUnique({where:{scope}});
+  const defaultPrompt=getDefaultTrainingPrompt(kind,scope);
+
+  let training=await prisma.trainingPrompt.findUnique({where:{kind_scope:{kind,scope}}});
   if(!training){
     training=await prisma.trainingPrompt.create({
-      data:{
-        scope,
-        prompt:defaultTrainingPrompts[scope],
-        revisions:{create:{version:1,prompt:defaultTrainingPrompts[scope]}},
-      },
+      data:{kind,scope,prompt:defaultPrompt,revisions:{create:{version:1,prompt:defaultPrompt}}},
     });
   }
+
   await prisma.$transaction([
     prisma.trainingPrompt.update({where:{id:training.id},data:{usageCount:{increment:1}}}),
-    prisma.generationLog.create({data:{trainingPromptId:training.id,scope,promptVersion:training.version,platform:String(body.platform||''),author:body.author?String(body.author):null,pillar:body.pillar?String(body.pillar):null,objective:body.objective?String(body.objective):null,idea:body.idea?String(body.idea):null}})
+    prisma.generationLog.create({data:{
+      trainingPromptId:training.id,
+      kind,
+      scope,
+      promptVersion:training.version,
+      platform:String(body.platform||''),
+      author:body.author?String(body.author):null,
+      pillar:body.pillar?String(body.pillar):null,
+      objective:body.objective?String(body.objective):null,
+      idea:body.idea?String(body.idea):null
+    }})
   ]).catch(()=>null);
-  const effectiveBody={...body,systemPrompt:training.prompt,training:{scope,label:promptScopeLabels[scope],version:training.version}};
+
+  const trainingMeta={kind:'ROTEIRO',scope,label:promptScopeLabels[scope],version:training.version};
+  const effectiveBody={...body,generatorType:'ROTEIRO',systemPrompt:training.prompt,training:trainingMeta};
   const webhook=process.env.AI_WEBHOOK_URL;
-  if(webhook){try{const r=await fetch(webhook,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(effectiveBody),cache:'no-store'});if(r.ok)return NextResponse.json({mode:'llm-webhook',training:effectiveBody.training,...(await r.json())});}catch{}}
+
+  if(webhook){
+    try{
+      const r=await fetch(webhook,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(effectiveBody),cache:'no-store'});
+      if(r.ok)return NextResponse.json({mode:'llm-webhook',training:trainingMeta,...(await r.json())});
+    }catch{}
+  }
+
   return NextResponse.json(fallback(body,{scope,version:training.version,prompt:training.prompt}));
 }
