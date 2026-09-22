@@ -91,7 +91,7 @@ async function main() {
     assert(relation?.derivatives.some((c) => c.id === childId), 'parent/derived relation failed');
     assert(relation?.promotedIdeas.some((i) => i.id === ideaId), 'idea-to-content promotion relation failed');
 
-    const instagramTraining = await prisma.trainingPrompt.findUnique({ where: { kind_scope: { kind: TrainingKind.ROTEIRO, scope: PromptScope.INSTAGRAM } } });
+    const instagramTraining = await prisma.trainingPrompt.findFirst({ where: { kind: TrainingKind.ROTEIRO, scope: PromptScope.INSTAGRAM } });
     assert(instagramTraining, 'training lookup failed');
     const generation = await prisma.generationLog.create({
       data: {
