@@ -11,7 +11,15 @@ export async function POST(req:Request){
   const body=await req.json();
   const scope=scopeFromPlatform(body.platform);
   let training=await prisma.trainingPrompt.findUnique({where:{scope}});
-  if(!training){training=await prisma.trainingPrompt.create({data:{scope,prompt:defaultTrainingPrompts[scope],revisions:{create:{version:1,prompt:defaultTrainingPrompts[scope]}}}}});}
+  if(!training){
+    training=await prisma.trainingPrompt.create({
+      data:{
+        scope,
+        prompt:defaultTrainingPrompts[scope],
+        revisions:{create:{version:1,prompt:defaultTrainingPrompts[scope]}},
+      },
+    });
+  }
   await prisma.$transaction([
     prisma.trainingPrompt.update({where:{id:training.id},data:{usageCount:{increment:1}}}),
     prisma.generationLog.create({data:{trainingPromptId:training.id,scope,promptVersion:training.version,platform:String(body.platform||''),author:body.author?String(body.author):null,pillar:body.pillar?String(body.pillar):null,objective:body.objective?String(body.objective):null,idea:body.idea?String(body.idea):null}})
