@@ -192,6 +192,17 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 
 /* remove-all-fixed-cta-v10 */
 .floating-cta,.mobile-cta{display:none!important;position:static!important}
+
+/* player da imersao - ajuste final */
+.concept.section{padding-top:96px;padding-bottom:96px}
+.concept .concept-grid{max-width:900px!important;text-align:center}
+.concept h2{max-width:780px;margin-left:auto;margin-right:auto}
+.concept-statement{max-width:680px;margin:18px auto 22px;font-size:clamp(18px,1.6vw,22px);line-height:1.4;font-weight:600;letter-spacing:-.015em}
+.concept-video{width:min(100%,860px);aspect-ratio:16/9;margin:0 auto 24px;border-radius:24px;overflow:hidden;background:#090909;box-shadow:0 18px 48px rgba(17,16,13,.14)}
+.concept-video video{display:block;width:100%;height:100%;aspect-ratio:16/9;object-fit:cover;background:#090909}
+.concept .quote{max-width:720px;margin:22px auto 0!important;padding:0!important;border:0!important;font-size:clamp(20px,1.9vw,25px);line-height:1.35;font-weight:750;letter-spacing:-.02em}
+.concept .cta-row{margin-top:28px;justify-content:center}
+@media(max-width:680px){.concept.section{padding-top:64px;padding-bottom:64px}.concept-statement{margin:14px auto 18px;font-size:17px}.concept-video{border-radius:16px;margin-bottom:20px}.concept .quote{font-size:20px;margin-top:18px!important}}
 </style>
 </head>
 <body>
@@ -268,8 +279,8 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
   <div class="reveal"><div class="eyebrow">A grande ideia</div><h2>O que significa fazer <span class="gold nowrap">1 Mês em 1 Dia?</span></h2>
     <div class="concept-statement">Não é sobre vender tudo em um único dia e ficar sem vender depois.</div>
     <div class="concept-video">
-      <video controls playsinline preload="metadata">
-        <source src="https://1mesemumdia.com/wp-content/uploads/2025/07/Trazer-2-Prosperidade-Plena-.mov" type="video/quicktime">
+      <video controls playsinline preload="metadata" poster="/assets/imersao-1-mes-em-1-dia-poster.jpg">
+        <source src="/assets/imersao-1-mes-em-1-dia.mp4" type="video/mp4">
         Seu navegador não conseguiu reproduzir este vídeo.
       </video>
     </div>
