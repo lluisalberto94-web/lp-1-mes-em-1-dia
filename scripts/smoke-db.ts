@@ -1,4 +1,4 @@
-import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope } from '@prisma/client';
+import { PrismaClient, Author, Category, ContentFormat, ContentStatus, Pillar, Platform, PromptScope, TrainingKind } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const assert = (condition: unknown, message: string) => {
@@ -9,9 +9,9 @@ async function main() {
   const initialCount = await prisma.content.count();
   assert(initialCount >= 14, `expected at least 14 seeded contents, found ${initialCount}`);
   const trainings = await prisma.trainingPrompt.findMany();
-  assert(trainings.length === 5, `expected 5 training prompts, found ${trainings.length}`);
-  assert(trainings.some((t) => t.scope === PromptScope.INSTAGRAM), 'Instagram training prompt missing');
-  assert(trainings.some((t) => t.scope === PromptScope.MULTIPLATAFORMA), 'Multiplatform training prompt missing');
+  assert(trainings.length === 10, `expected 10 training prompts, found ${trainings.length}`);
+  assert(trainings.some((t) => t.kind === TrainingKind.IDEIA && t.scope === PromptScope.INSTAGRAM), 'Instagram idea training prompt missing');
+  assert(trainings.some((t) => t.kind === TrainingKind.ROTEIRO && t.scope === PromptScope.MULTIPLATAFORMA), 'Multiplatform script training prompt missing');
 
   const existingParent = await prisma.content.findFirst({
     where: { derivatives: { some: {} } },
@@ -91,11 +91,12 @@ async function main() {
     assert(relation?.derivatives.some((c) => c.id === childId), 'parent/derived relation failed');
     assert(relation?.promotedIdeas.some((i) => i.id === ideaId), 'idea-to-content promotion relation failed');
 
-    const instagramTraining = await prisma.trainingPrompt.findUnique({ where: { scope: PromptScope.INSTAGRAM } });
+    const instagramTraining = await prisma.trainingPrompt.findUnique({ where: { kind_scope: { kind: TrainingKind.ROTEIRO, scope: PromptScope.INSTAGRAM } } });
     assert(instagramTraining, 'training lookup failed');
     const generation = await prisma.generationLog.create({
       data: {
         trainingPromptId: instagramTraining!.id,
+        kind: TrainingKind.ROTEIRO,
         scope: PromptScope.INSTAGRAM,
         promptVersion: instagramTraining!.version,
         platform: 'INSTAGRAM',
