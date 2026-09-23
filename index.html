@@ -220,6 +220,10 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 \n/* performance */\nmain>section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 900px}\n@media(max-width:680px){main>section:not(.hero){contain-intrinsic-size:auto 760px}}\n
 /* offer-cta-only-button-v11 */
 .offer-cta.only-button{justify-content:center;align-items:center}
+
+/* oferta-scroll-offset-v12 */
+#oferta{scroll-margin-top:84px}
+@media(max-width:680px){#oferta{scroll-margin-top:76px}}
 </style>
 </head>
 <body>
@@ -409,7 +413,21 @@ window.addEventListener('scroll',function(){if(progressTick)return;progressTick=
 var modal=document.getElementById('leadModal');
 function openModal(){modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');var first=modal.querySelector('input[name="nome"]');setTimeout(function(){if(first)first.focus()},50)}
 function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}
-document.querySelectorAll('[data-scroll-offer]').forEach(function(b){b.addEventListener('click',function(){var offer=document.getElementById('oferta');if(offer)offer.scrollIntoView({behavior:'smooth',block:'start'})})});
+function scrollToOffer(){
+  var offer=document.getElementById('oferta');
+  if(!offer)return;
+  var header=document.querySelector('.top');
+  var offset=(header?header.offsetHeight:0)+12;
+  var target=offer.getBoundingClientRect().top+window.scrollY-offset;
+  window.scrollTo({top:target,behavior:'smooth'});
+  setTimeout(function(){
+    var corrected=offer.getBoundingClientRect().top+window.scrollY-offset;
+    if(Math.abs(window.scrollY-corrected)>2){
+      window.scrollTo({top:corrected,behavior:'auto'});
+    }
+  },700);
+}
+document.querySelectorAll('[data-scroll-offer]').forEach(function(b){b.addEventListener('click',scrollToOffer)});
 document.querySelectorAll('[data-open-form]').forEach(function(b){b.addEventListener('click',openModal)});document.querySelectorAll('[data-close-form]').forEach(function(b){b.addEventListener('click',closeModal)});modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
 function maskTel(input){input.addEventListener('input',function(){var v=this.value.replace(/\D/g,'').slice(0,11);if(v.length>10)this.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>6)this.value='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);else if(v.length>2)this.value='('+v.slice(0,2)+') '+v.slice(2);else this.value=v})}
 document.querySelectorAll('input[name="telefone"]').forEach(maskTel);
