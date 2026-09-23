@@ -29,5 +29,78 @@ async function seedTraining(){
     }
   }
 }
-async function main(){await seedTraining();if(await prisma.content.count())return;const created:any[]=[];for(let i=0;i<ideas.length;i++){const [headline,author,pillar,format,category,platforms]=ideas[i];const d=new Date('2026-09-22T12:00:00-03:00');d.setDate(d.getDate()+i);const c=await prisma.content.create({data:{scheduledAt:d,headline,author,pillar,format,category,status:status[i],hook:`Para aí rapidinho: ${headline}`,ideaCore:`Conectar “${headline}” à realidade do dono de clínica e ao inimigo central: improviso.`,script:`GANCHO\n${headline}\n\nPROBLEMA\nMostre o custo do improviso.\n\nDESENVOLVIMENTO\nTraga um princípio aplicável.\n\nEXEMPLO\nUse um bastidor, número ou situação real.\n\nCONCLUSÃO\nCrescimento com estrutura, execução e princípios.`,caption:`${headline}\n\nO problema não é trabalhar pouco. É trabalhar sem sistema.`,cta:i===13?'Salve para revisar com sua equipe.':'Salve e compartilhe com outro dono de clínica.',editNotes:'Sem vinheta. Corte seco. Headline nos primeiros 2 segundos. Legenda dinâmica.',publications:{create:platforms.map((platform:Platform)=>({platform,headline,caption:`${headline}\n\nMenos improviso. Mais estrutura.`,cta:'Salve e compartilhe.',seoTitle:platform===Platform.YOUTUBE?`${headline} | Gestão de clínicas`:null,thumbnailHeadline:platform===Platform.YOUTUBE?'VOCÊ VIROU O GARGALO':null,keywordPrimary:platform===Platform.YOUTUBE?'gestão de clínicas':null,keywordsSecondary:platform===Platform.YOUTUBE?['processos','liderança','crescimento']:[],description:platform===Platform.YOUTUBE?'Como reduzir a dependência do dono e estruturar a clínica para crescer com previsibilidade.':null,sourceOrigin:format===ContentFormat.CORTE?'CORTE DO YOUTUBE':'ORIGINAL VERTICAL'}))}}});created.push(c);}await prisma.content.update({where:{id:created[3].id},data:{parentId:created[2].id}});await prisma.content.update({where:{id:created[6].id},data:{parentId:created[2].id}});await prisma.idea.createMany({data:[{title:'Lauro: empresário que confunde saldo com lucro',notes:'Usar exemplo de decisão errada tomada olhando só caixa.',author:Author.LAURO,pillar:Pillar.NEGOCIOS},{title:'Renata: follow-up que nutre em vez de cobrar resposta',author:Author.RENATA,pillar:Pillar.MARKETING},{title:'Casal: uma decisão em que princípio custou mais no curto prazo',author:Author.CASAL,pillar:Pillar.FE}]});}
+async function main(){
+  await seedTraining();
+
+  const demoHeadlines=ideas.map(([headline])=>headline);
+  const keepHeadline=ideas[0][0];
+
+  // Remove only the demo content shipped by this project. Never touch user-created content.
+  await prisma.content.deleteMany({
+    where:{
+      headline:{in:demoHeadlines.filter((headline)=>headline!==keepHeadline) as string[]}
+    }
+  });
+
+  // Keep a single clean example in the library, unscheduled and in the earliest workflow stage.
+  const existingDemo=await prisma.content.findFirst({where:{headline:keepHeadline}});
+  if(existingDemo){
+    await prisma.content.update({
+      where:{id:existingDemo.id},
+      data:{
+        scheduledAt:null,
+        status:ContentStatus.IDEIA,
+        parentId:null
+      }
+    });
+  }
+
+  // If the database has no content at all, create only one example instead of the old 14-item demo set.
+  if(await prisma.content.count())return;
+
+  const [headline,author,pillar,format,category,platforms]=ideas[0];
+  await prisma.content.create({
+    data:{
+      scheduledAt:null,
+      headline,
+      author,
+      pillar,
+      format,
+      category,
+      status:ContentStatus.IDEIA,
+      hook:`Para aí rapidinho: ${headline}`,
+      ideaCore:`Conectar “${headline}” à realidade do dono de clínica e ao inimigo central: improviso.`,
+      script:`GANCHO
+${headline}
+
+PROBLEMA
+Mostre o custo do improviso.
+
+DESENVOLVIMENTO
+Traga um princípio aplicável.
+
+EXEMPLO
+Use um bastidor, número ou situação real.
+
+CONCLUSÃO
+Crescimento com estrutura, execução e princípios.`,
+      caption:`${headline}
+
+O problema não é trabalhar pouco. É trabalhar sem sistema.`,
+      cta:'Salve e compartilhe com outro dono de clínica.',
+      editNotes:'Sem vinheta. Corte seco. Headline nos primeiros 2 segundos. Legenda dinâmica.',
+      publications:{
+        create:platforms.map((platform:Platform)=>({
+          platform,
+          headline,
+          caption:`${headline}
+
+Menos improviso. Mais estrutura.`,
+          cta:'Salve e compartilhe.',
+          sourceOrigin:'ORIGINAL VERTICAL'
+        }))
+      }
+    }
+  });
+}
 main().finally(()=>prisma.$disconnect());
