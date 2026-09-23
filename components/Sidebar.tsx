@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { AuthorScopeSwitcher } from '@/components/AuthorScopeSwitcher';
+import { AuthorScope } from '@/lib/author-context';
 
 const items=[
   ['/','Dashboard'],
@@ -10,13 +12,15 @@ const items=[
   ['/treinamento-ia','Treinamento IA']
 ];
 
-export function Sidebar(){
+export function Sidebar({authorScope}:{authorScope:AuthorScope}){
   return <>
     <aside className="sidebar">
       <Link href="/" className="brand">
         <strong>Freire Educação</strong>
         <span>Gerador de conteúdo para redes sociais</span>
       </Link>
+
+      <AuthorScopeSwitcher active={authorScope}/>
 
       <nav className="nav">
         {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
@@ -28,8 +32,11 @@ export function Sidebar(){
       </div>
     </aside>
 
-    <nav className="mobile-nav">
-      {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
-    </nav>
+    <div className="mobile-navigation">
+      <AuthorScopeSwitcher active={authorScope} compact/>
+      <nav className="mobile-nav">
+        {items.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}
+      </nav>
+    </div>
   </>;
 }
