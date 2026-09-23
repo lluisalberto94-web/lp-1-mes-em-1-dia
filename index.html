@@ -227,6 +227,11 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 
 /* destaque-metodo-replicavel-v13 */
 .replicable-highlight{font-weight:800;color:#e7dfd1;text-decoration:underline;text-decoration-color:rgba(214,173,79,.7);text-decoration-thickness:2px;text-underline-offset:4px}
+
+/* depoimento-video-v14 */
+.proof-video{width:min(100%,390px);margin:34px auto 0;padding:10px;border:1px solid rgba(214,173,79,.28);border-radius:22px;background:rgba(255,255,255,.025);box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.proof-video video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:14px;background:#050505}
+@media(max-width:680px){.proof-video{width:min(100%,340px);margin-top:28px;padding:8px;border-radius:18px}.proof-video video{border-radius:12px}}
 </style>
 </head>
 <body>
@@ -268,6 +273,12 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
     <figure class="proof-slide"><img src="/assets/resultado-real-4.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
     <figure class="proof-slide"><img src="/assets/resultado-real-5.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
   </div></div><div class="proof-controls"><div class="proof-dots" id="proofDots"></div><div class="proof-arrows"><button class="proof-arrow" id="proofPrev" type="button" aria-label="Resultado anterior">←</button><button class="proof-arrow" id="proofNext" type="button" aria-label="Próximo resultado">→</button></div></div></div>
+  <div class="proof-video reveal">
+    <video controls playsinline preload="none" aria-label="Depoimento em vídeo">
+      <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/1c91c3be-d018-4fcc-b904-575b286b8217.mp4" type="video/mp4">
+      Seu navegador não conseguiu reproduzir este vídeo.
+    </video>
+  </div>
 </div></section>
 
 <section class="section dark pain-section center-flow"><div class="wrap">
