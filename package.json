@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "node prepare-video.js && node optimize-assets.js",
+    "postinstall": "node prepare-video.js && node optimize-assets.js && node build-cloudflare.js",
     "start": "node server.js",
     "build:cloudflare": "node build-cloudflare.js",
     "deploy:cloudflare": "npm run build:cloudflare && wrangler deploy",
