@@ -1,4 +1,4 @@
-import { Author } from '@prisma/client';
+import type { Author } from '@prisma/client';
 
 export const AUTHOR_SCOPE_COOKIE='freire_author_scope';
 
