@@ -12,9 +12,9 @@ type IdeaResult={
   platform?:string;
 };
 
-export function IdeaGenerator(){
+export function IdeaGenerator({initialAuthor='LAURO',lockAuthor=false}:{initialAuthor?:string,lockAuthor?:boolean}){
   const [form,setForm]=useState({
-    author:'LAURO',
+    author:initialAuthor,
     pillar:'NEGOCIOS',
     platform:'MULTIPLATAFORMA',
     objective:'ALCANCE',
@@ -74,9 +74,10 @@ export function IdeaGenerator(){
     <section className="panel">
       <div className="form-group">
         <label>Quem aparece?</label>
-        <select className="select" value={form.author} onChange={e=>update('author',e.target.value)}>
+        <select className="select" value={form.author} onChange={e=>update('author',e.target.value)} disabled={lockAuthor}>
           {enumValues.authors.map(a=><option key={a} value={a}>{authorLabel[a]}</option>)}
         </select>
+        {lockAuthor&&<div className="field-hint">Definido pela visão global.</div>}
       </div>
 
       <div className="form-group mt-4">
