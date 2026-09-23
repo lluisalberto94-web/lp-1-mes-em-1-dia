@@ -2,16 +2,20 @@ import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { authorLabel, formatDate, formatLabel, pillarLabel, statusClass, statusLabel } from '@/lib/meta';
 import { StatusSelect } from '@/components/StatusSelect';
+import { getAuthorScope } from '@/lib/author-context-server';
+import { authorScopeLabel, scopeToAuthor } from '@/lib/author-context';
 export const dynamic='force-dynamic';
 
 export default async function Calendar({searchParams}:{searchParams:Promise<{days?:string,view?:string}>}){
   const params=await searchParams;
+  const scope=await getAuthorScope();
+  const activeAuthor=scopeToAuthor(scope);
   const days=[7,14,30].includes(Number(params.days))?Number(params.days):14;
   const view=params.view==='list'?'list':'grid';
   const start=new Date();start.setHours(0,0,0,0);
   const end=new Date(start);end.setDate(end.getDate()+days);
   const contents=await prisma.content.findMany({
-    where:{scheduledAt:{gte:start,lt:end}},
+    where:{scheduledAt:{gte:start,lt:end},...(activeAuthor?{author:activeAuthor}:{})},
     orderBy:{scheduledAt:'asc'},
     include:{publications:true}
   });
@@ -21,7 +25,7 @@ export default async function Calendar({searchParams}:{searchParams:Promise<{day
   return <div className="content">
     <div className="page-head calendar-page-head">
       <div>
-        <div className="eyebrow">Calendário editorial</div>
+        <div className="eyebrow">Calendário editorial · {authorScopeLabel[scope]}</div>
         <h1>{days} dias de visão.</h1>
         <p>Headline, autor, formato e estágio visíveis sem abrir cinco ferramentas.</p>
       </div>
