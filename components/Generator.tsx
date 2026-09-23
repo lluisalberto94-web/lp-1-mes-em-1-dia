@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { authorLabel, enumValues, pillarLabel } from '@/lib/meta';
 
-export function Generator({initialIdea='',ideaId,initialPlatform='MULTIPLATAFORMA'}:{initialIdea?:string,ideaId?:string,initialPlatform?:string}){
+export function Generator({initialIdea='',ideaId,initialPlatform='MULTIPLATAFORMA',initialAuthor='LAURO',lockAuthor=false}:{initialIdea?:string,ideaId?:string,initialPlatform?:string,initialAuthor?:string,lockAuthor?:boolean}){
   const [form,setForm]=useState({
-    author:'LAURO',
+    author:initialAuthor,
     pillar:'NEGOCIOS',
     platform:['INSTAGRAM','TIKTOK','YOUTUBE','SHORTS','MULTIPLATAFORMA'].includes(initialPlatform)?initialPlatform:'MULTIPLATAFORMA',
     objective:'AUTORIDADE',
@@ -36,9 +36,10 @@ export function Generator({initialIdea='',ideaId,initialPlatform='MULTIPLATAFORM
     <section className="panel">
       <div className="form-group">
         <label>Quem aparece?</label>
-        <select className="select" value={form.author} onChange={e=>update('author',e.target.value)}>
+        <select className="select" value={form.author} onChange={e=>update('author',e.target.value)} disabled={lockAuthor}>
           {enumValues.authors.map(a=><option key={a} value={a}>{authorLabel[a]}</option>)}
         </select>
+        {lockAuthor&&<div className="field-hint">Definido pela visão global.</div>}
       </div>
 
       <div className="form-group mt-4">
