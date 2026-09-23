@@ -228,10 +228,17 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 /* destaque-metodo-replicavel-v13 */
 .replicable-highlight{font-weight:800;color:#e7dfd1;text-decoration:underline;text-decoration-color:rgba(214,173,79,.7);text-decoration-thickness:2px;text-underline-offset:4px}
 
-/* depoimento-video-v14 */
-.proof-video{width:min(100%,390px);margin:34px auto 0;padding:10px;border:1px solid rgba(214,173,79,.28);border-radius:22px;background:rgba(255,255,255,.025);box-shadow:0 24px 60px rgba(0,0,0,.28)}
+/* depoimento-video-v15 */
+.proof-video{position:relative;width:min(100%,390px);margin:34px auto 38px;padding:10px;border:1px solid rgba(214,173,79,.38);border-radius:22px;background:rgba(255,255,255,.025);box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden}
 .proof-video video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:14px;background:#050505}
-@media(max-width:680px){.proof-video{width:min(100%,340px);margin-top:28px;padding:8px;border-radius:18px}.proof-video video{border-radius:12px}}
+.proof-video-prompt{position:absolute;inset:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.08) 35%,rgba(0,0,0,.62) 100%);cursor:pointer;transition:opacity .25s ease,transform .25s ease}
+.proof-video-prompt:hover{transform:scale(1.012)}
+.proof-video-prompt strong{font-size:13px;letter-spacing:.12em;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+.proof-video-prompt small{font-size:12px;color:rgba(255,255,255,.82)}
+.proof-play{display:grid;place-items:center;width:68px;height:68px;border-radius:50%;padding-left:4px;background:rgba(212,169,71,.95);color:#111;font-size:25px;box-shadow:0 0 0 0 rgba(212,169,71,.55);animation:proofPlayPulse 1.8s ease-out infinite}
+.proof-video.is-playing .proof-video-prompt{opacity:0;pointer-events:none}
+@keyframes proofPlayPulse{0%{box-shadow:0 0 0 0 rgba(212,169,71,.48)}70%{box-shadow:0 0 0 18px rgba(212,169,71,0)}100%{box-shadow:0 0 0 0 rgba(212,169,71,0)}}
+@media(max-width:680px){.proof-video{width:min(100%,340px);margin-top:28px;margin-bottom:32px;padding:8px;border-radius:18px}.proof-video video,.proof-video-prompt{border-radius:12px}.proof-video-prompt{inset:8px}.proof-play{width:62px;height:62px;font-size:23px}}
 </style>
 </head>
 <body>
@@ -266,6 +273,18 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 </div></section>
 
 <section class="section social"><div class="wrap"><div class="eyebrow reveal">Provas reais</div><h2 class="reveal">Não é promessa.<br><span class="gold">É resultado acontecendo.</span></h2><p class="lead reveal">Resultados reais compartilhados por quem colocou estratégia, comercial e execução em prática.</p>
+  <div class="proof-video reveal" id="proofVideo">
+    <video id="proofVideoPlayer" controls playsinline preload="none" poster="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/5cf8d071-98db-493f-8a74-a609839984eb.jpg" aria-label="Depoimento em vídeo">
+      <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/1c91c3be-d018-4fcc-b904-575b286b8217.mp4" type="video/mp4">
+      Seu navegador não conseguiu reproduzir este vídeo.
+    </video>
+    <button class="proof-video-prompt" id="proofVideoPrompt" type="button" aria-label="Assistir ao depoimento">
+      <span class="proof-play">▶</span>
+      <strong>ASSISTA AO DEPOIMENTO</strong>
+      <small>Toque para ouvir</small>
+    </button>
+  </div>
+
   <div class="proof-carousel reveal" id="proofCarousel"><div class="proof-viewport"><div class="proof-track" id="proofTrack">
     <figure class="proof-slide"><img src="/assets/resultado-real-1.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
     <figure class="proof-slide"><img src="/assets/resultado-real-2.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
@@ -273,12 +292,6 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
     <figure class="proof-slide"><img src="/assets/resultado-real-4.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
     <figure class="proof-slide"><img src="/assets/resultado-real-5.webp" alt="Resultado real compartilhado por participante" width="820" height="560" loading="lazy" decoding="async" fetchpriority="low"></figure>
   </div></div><div class="proof-controls"><div class="proof-dots" id="proofDots"></div><div class="proof-arrows"><button class="proof-arrow" id="proofPrev" type="button" aria-label="Resultado anterior">←</button><button class="proof-arrow" id="proofNext" type="button" aria-label="Próximo resultado">→</button></div></div></div>
-  <div class="proof-video reveal">
-    <video controls playsinline preload="none" aria-label="Depoimento em vídeo">
-      <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/1c91c3be-d018-4fcc-b904-575b286b8217.mp4" type="video/mp4">
-      Seu navegador não conseguiu reproduzir este vídeo.
-    </video>
-  </div>
 </div></section>
 
 <section class="section dark pain-section center-flow"><div class="wrap">
@@ -485,6 +498,11 @@ document.querySelectorAll('[data-lead-form]').forEach(function(form){
   });
 });
 function initProofCarousel(){var carousel=document.getElementById('proofCarousel');if(!carousel)return;var track=document.getElementById('proofTrack'),slides=[].slice.call(track.querySelectorAll('.proof-slide')),dots=document.getElementById('proofDots'),prev=document.getElementById('proofPrev'),next=document.getElementById('proofNext'),index=0,timer,touchStart=0,paused=false;function perView(){if(innerWidth>=981)return 3;if(innerWidth>=681)return 2;return 1}function maxIndex(){return Math.max(0,slides.length-perView())}function buildDots(){dots.innerHTML='';for(var i=0;i<=maxIndex();i++){var b=document.createElement('button');b.type='button';b.className='proof-dot';b.setAttribute('aria-label','Ir para prova '+(i+1));(function(n){b.onclick=function(){index=n;update();restart()}})(i);dots.appendChild(b)}}function update(){var gap=parseFloat(getComputedStyle(track).gap)||20;var step=(slides[0]?slides[0].getBoundingClientRect().width:0)+gap;index=Math.max(0,Math.min(index,maxIndex()));track.style.transform='translate3d('+(-index*step)+'px,0,0)';slides.forEach(function(s){s.classList.remove('is-active')});var c=index+Math.floor((perView()-1)/2);if(slides[c])slides[c].classList.add('is-active');[].slice.call(dots.children).forEach(function(d,i){d.classList.toggle('is-active',i===index)})}function advance(){index=index>=maxIndex()?0:index+1;update()}function stop(){if(timer){clearInterval(timer);timer=null}}function start(){stop();if(!paused)timer=setInterval(advance,4200)}function restart(){stop();setTimeout(start,150)}prev.onclick=function(){index=index<=0?maxIndex():index-1;update();restart()};next.onclick=function(){advance();restart()};carousel.addEventListener('mouseenter',function(){paused=true;stop()});carousel.addEventListener('mouseleave',function(){paused=false;start()});carousel.addEventListener('touchstart',function(e){touchStart=e.touches[0].clientX;paused=true;stop()},{passive:true});carousel.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-touchStart;if(Math.abs(d)>45){if(d<0)advance();else{index=index<=0?maxIndex():index-1;update()}}paused=false;start()},{passive:true});addEventListener('resize',function(){index=Math.min(index,maxIndex());buildDots();update();restart()});buildDots();update();start()}
+var proofVideoWrap=document.getElementById('proofVideo'),proofVideoPlayer=document.getElementById('proofVideoPlayer'),proofVideoPrompt=document.getElementById('proofVideoPrompt');
+if(proofVideoWrap&&proofVideoPlayer&&proofVideoPrompt){
+  proofVideoPrompt.addEventListener('click',function(){proofVideoWrap.classList.add('is-playing');proofVideoPlayer.play().catch(function(){})});
+  proofVideoPlayer.addEventListener('play',function(){proofVideoWrap.classList.add('is-playing')});
+}
 var proofCarouselEl=document.getElementById('proofCarousel');
 if(proofCarouselEl){if('IntersectionObserver' in window){var proofIo=new IntersectionObserver(function(entries){if(entries[0]&&entries[0].isIntersecting){proofIo.disconnect();initProofCarousel()}},{rootMargin:'500px 0px'});proofIo.observe(proofCarouselEl)}else{setTimeout(initProofCarousel,0)}}
 </script>
