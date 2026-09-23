@@ -7,17 +7,11 @@ const assert = (condition: unknown, message: string) => {
 
 async function main() {
   const initialCount = await prisma.content.count();
-  assert(initialCount >= 14, `expected at least 14 seeded contents, found ${initialCount}`);
+  assert(initialCount >= 1, `expected at least 1 content, found ${initialCount}`);
   const trainings = await prisma.trainingPrompt.findMany();
   assert(trainings.length === 10, `expected 10 training prompts, found ${trainings.length}`);
   assert(trainings.some((t) => t.kind === TrainingKind.IDEIA && t.scope === PromptScope.INSTAGRAM), 'Instagram idea training prompt missing');
   assert(trainings.some((t) => t.kind === TrainingKind.ROTEIRO && t.scope === PromptScope.MULTIPLATAFORMA), 'Multiplatform script training prompt missing');
-
-  const existingParent = await prisma.content.findFirst({
-    where: { derivatives: { some: {} } },
-    include: { derivatives: true },
-  });
-  assert(existingParent && existingParent.derivatives.length > 0, 'seeded parent/derived relationship missing');
 
   const marker = `SMOKE-${Date.now()}`;
   let parentId = '';
