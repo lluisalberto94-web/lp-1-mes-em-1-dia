@@ -1,3 +1,4 @@
+// cloudflare-build-trigger-v2
 const fs = require("fs");
 const path = require("path");
 
