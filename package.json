@@ -4,10 +4,16 @@
   "private": true,
   "scripts": {
     "postinstall": "node prepare-video.js && node optimize-assets.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build:cloudflare": "node build-cloudflare.js",
+    "deploy:cloudflare": "npm run build:cloudflare && wrangler deploy",
+    "preview:cloudflare": "npm run build:cloudflare && wrangler dev"
   },
   "dependencies": {
     "ffmpeg-static": "5.2.0",
     "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.68.0"
   }
 }
