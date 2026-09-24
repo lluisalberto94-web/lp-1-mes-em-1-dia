@@ -240,8 +240,25 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 @keyframes proofPlayPulse{0%{box-shadow:0 0 0 0 rgba(212,169,71,.48)}70%{box-shadow:0 0 0 18px rgba(212,169,71,0)}100%{box-shadow:0 0 0 0 rgba(212,169,71,0)}}
 @media(max-width:680px){.proof-video{width:min(100%,340px);margin-top:28px;margin-bottom:32px;padding:8px;border-radius:18px}.proof-video video,.proof-video-prompt{border-radius:12px}.proof-video-prompt{inset:8px}.proof-play{width:62px;height:62px;font-size:23px}}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1248784553899062');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1248784553899062&ev=PageView&noscript=1"
+/></noscript>
 <div class="progress" id="progress"></div>
 <header class="top"><div class="wrap topin"><div class="brand"><img src="/assets/logo-oficial-360.webp" alt="Método 1 Mês em 1 Dia" width="360" height="96" decoding="async"></div><div class="topmeta">19 &amp; 20 OUT 2026 • ALPHAVILLE/SP</div></div></header>
 <main>
@@ -489,7 +506,10 @@ document.querySelectorAll('[data-lead-form]').forEach(function(form){
       try{result=await response.json()}catch(_){}
       if(!response.ok||result.ok===false)throw new Error(result.error||'Falha ao enviar');
 
-      window.location.href='https://api.whatsapp.com/send/?phone=5511930468463&text=Ol%C3%A1,%20acessei%20o%20site%20e%20tenho%20interesse%20na%20imers%C3%A3o%201%20m%C3%AAs%20em%201%20dia';
+      if(typeof fbq==='function'){fbq('track','Lead');}
+      setTimeout(function(){
+        window.location.href='https://api.whatsapp.com/send/?phone=5511930468463&text=Ol%C3%A1,%20acessei%20o%20site%20e%20tenho%20interesse%20na%20imers%C3%A3o%201%20m%C3%AAs%20em%201%20dia';
+      },300);
     }catch(err){
       console.error('Erro no envio do formulário:',err);
       alert('Não foi possível enviar seus dados agora. Tente novamente em alguns segundos.');
