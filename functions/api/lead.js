@@ -1,4 +1,5 @@
 const CRM_WEBHOOK_URL = "https://wh.upviewcrm.com/api/webhooks/inbound/lead/freire-educacao/lp-imersao-luis";
+const ATTRIBUTION_URL = "https://xtiagbrqakritwkpplyz.supabase.co/functions/v1/capture-lp-attribution";
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -29,7 +30,10 @@ export async function onRequestPost(context) {
     telefone,
     utm_source: String(data?.utm_source || ""),
     utm_medium: String(data?.utm_medium || ""),
-    utm_campaign: String(data?.utm_campaign || "")
+    utm_campaign: String(data?.utm_campaign || ""),
+    utm_content: String(data?.utm_content || ""),
+    utm_term: String(data?.utm_term || ""),
+    utm_id: String(data?.utm_id || "")
   };
 
   const controller = new AbortController();
@@ -53,6 +57,29 @@ export async function onRequestPost(context) {
         error: "O CRM não confirmou o recebimento do lead"
       }, 502);
     }
+
+    const attributionPayload = {
+      event_id: crypto.randomUUID(),
+      page_key: "1mes1dia",
+      utm_source: payload.utm_source,
+      utm_medium: payload.utm_medium,
+      utm_campaign: payload.utm_campaign,
+      utm_content: payload.utm_content,
+      utm_term: payload.utm_term,
+      utm_id: payload.utm_id,
+      crm_status: upstream.status
+    };
+
+    context.waitUntil(
+      fetch(ATTRIBUTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(attributionPayload)
+      }).catch(() => {})
+    );
 
     return json({ ok: true, status: upstream.status });
   } catch (err) {
