@@ -30,7 +30,10 @@ export async function onRequestPost(context) {
     telefone,
     utm_source: String(data?.utm_source || ""),
     utm_medium: String(data?.utm_medium || ""),
-    utm_campaign: String(data?.utm_campaign || ""),
+    utm_campaign: String(data?.utm_campaign || "")
+  };
+
+  const attribution = {
     utm_content: String(data?.utm_content || ""),
     utm_term: String(data?.utm_term || ""),
     utm_id: String(data?.utm_id || "")
@@ -64,9 +67,9 @@ export async function onRequestPost(context) {
       utm_source: payload.utm_source,
       utm_medium: payload.utm_medium,
       utm_campaign: payload.utm_campaign,
-      utm_content: payload.utm_content,
-      utm_term: payload.utm_term,
-      utm_id: payload.utm_id,
+      utm_content: attribution.utm_content,
+      utm_term: attribution.utm_term,
+      utm_id: attribution.utm_id,
       crm_status: upstream.status
     };
 
