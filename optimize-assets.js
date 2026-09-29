@@ -9,18 +9,27 @@ const htmlPath = path.join(root, "index.html");
 async function makeResponsiveHero() {
   const src = path.join(assets, "hero-oficial.png");
   const outputs = {};
-  for (const width of [720, 1320]) {
+  for (const width of [480, 720, 960, 1320]) {
     const webp = path.join(assets, "hero-oficial-" + width + ".webp");
     const avif = path.join(assets, "hero-oficial-" + width + ".avif");
+    const isMobileVariant = width <= 960;
 
     await sharp(src)
       .resize({ width, withoutEnlargement: true })
-      .webp({ quality: 78, alphaQuality: 84, effort: 5 })
+      .webp({
+        quality: isMobileVariant ? 74 : 78,
+        alphaQuality: isMobileVariant ? 80 : 84,
+        effort: 5
+      })
       .toFile(webp);
 
     await sharp(src)
       .resize({ width, withoutEnlargement: true })
-      .avif({ quality: 52, effort: 4, chromaSubsampling: "4:4:4" })
+      .avif({
+        quality: isMobileVariant ? 46 : 52,
+        effort: 4,
+        chromaSubsampling: "4:2:0"
+      })
       .toFile(avif);
 
     outputs[width] = await sharp(webp).metadata();
@@ -119,9 +128,9 @@ function fileKb(name) {
 
     console.log(
       "Hero:",
-      "720 WebP", fileKb("hero-oficial-720.webp") + " KB,",
+      "480 AVIF", fileKb("hero-oficial-480.avif") + " KB,",
       "720 AVIF", fileKb("hero-oficial-720.avif") + " KB,",
-      "1320 WebP", fileKb("hero-oficial-1320.webp") + " KB,",
+      "960 AVIF", fileKb("hero-oficial-960.avif") + " KB,",
       "1320 AVIF", fileKb("hero-oficial-1320.avif") + " KB"
     );
     console.log("Logo:", fileKb("logo-oficial-360.webp") + " KB");
