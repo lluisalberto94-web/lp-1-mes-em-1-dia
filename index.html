@@ -6,7 +6,8 @@
 <meta name="theme-color" content="#070707">
 <title>Imersão 1 Mês em 1 Dia</title>
 <meta name="description" content="Conheça o método por trás de uma campanha que gerou R$ 1,2 milhão em faturamento em um único dia.">
-<link rel="preload" as="image" href="/assets/hero-oficial-720.avif" imagesrcset="/assets/hero-oficial-720.avif 720w, /assets/hero-oficial-1320.avif 1320w" imagesizes="(max-width:680px) 92vw, (max-width:980px) 560px, 46vw" type="image/avif" fetchpriority="high">\n<style>
+<link rel="preload" as="image" href="/assets/hero-oficial-720.avif" imagesrcset="/assets/hero-oficial-480.avif 480w, /assets/hero-oficial-720.avif 720w, /assets/hero-oficial-960.avif 960w, /assets/hero-oficial-1320.avif 1320w" imagesizes="(max-width:680px) 92vw, (max-width:980px) 560px, 46vw" type="image/avif" fetchpriority="high">
+<style>
 :root{
   --bg:#070707;--bg2:#0d0d0d;--ink:#11100d;--cream:#f1eadc;--cream2:#e8dfcf;
   --gold:#d6ad4f;--gold2:#f2d179;--text:#f7f3e9;--muted:#aba79e;--line:rgba(214,173,79,.24);
@@ -217,7 +218,11 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(56px,5.2vw,64px);line-height:1.04;let
 .concept .quote{max-width:720px;margin:22px auto 0!important;padding:0!important;border:0!important;font-size:clamp(20px,1.9vw,25px);line-height:1.35;font-weight:750;letter-spacing:-.02em}
 .concept .cta-row{margin-top:20px;justify-content:center}
 @media(max-width:680px){.concept.section{padding-top:64px;padding-bottom:64px}.concept-statement{margin:14px auto 18px;font-size:17px}.concept-video{border-radius:16px;margin-bottom:0}.concept .quote{font-size:20px;margin-top:18px!important}}
-\n/* performance */\nmain>section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 900px}\n@media(max-width:680px){main>section:not(.hero){contain-intrinsic-size:auto 760px}}\n
+
+/* performance */
+main>section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 900px}
+@media(max-width:680px){main>section:not(.hero){contain-intrinsic-size:auto 760px}}
+
 /* offer-cta-only-button-v11 */
 .offer-cta.only-button{justify-content:center;align-items:center}
 
@@ -278,9 +283,11 @@ src="https://www.facebook.com/tr?id=1248784553899062&ev=PageView&noscript=1"
   </div>
   <div class="hero-media">
     <picture class="hero-picture">
-      <source type="image/avif" srcset="/assets/hero-oficial-720.avif 720w, /assets/hero-oficial-1320.avif 1320w" sizes="(max-width:680px) 92vw, (max-width:980px) 560px, 46vw">
-      <source type="image/webp" srcset="/assets/hero-oficial-720.webp 720w, /assets/hero-oficial-1320.webp 1320w" sizes="(max-width:680px) 92vw, (max-width:980px) 560px, 46vw">
-      <img src="/assets/hero-oficial-1320.webp" alt="Lauro e Renata — Método 1 Mês em 1 Dia" width="1320" height="1200" loading="eager" fetchpriority="high" decoding="async">
+      <source media="(max-width:680px)" type="image/avif" srcset="/assets/hero-oficial-480.avif 480w, /assets/hero-oficial-720.avif 720w, /assets/hero-oficial-960.avif 960w" sizes="92vw">
+      <source media="(max-width:680px)" type="image/webp" srcset="/assets/hero-oficial-480.webp 480w, /assets/hero-oficial-720.webp 720w, /assets/hero-oficial-960.webp 960w" sizes="92vw">
+      <source type="image/avif" srcset="/assets/hero-oficial-720.avif 720w, /assets/hero-oficial-960.avif 960w, /assets/hero-oficial-1320.avif 1320w" sizes="(max-width:980px) 560px, 46vw">
+      <source type="image/webp" srcset="/assets/hero-oficial-720.webp 720w, /assets/hero-oficial-960.webp 960w, /assets/hero-oficial-1320.webp 1320w" sizes="(max-width:980px) 560px, 46vw">
+      <img src="/assets/hero-oficial-1320.webp" alt="Lauro e Renata — Método 1 Mês em 1 Dia" width="1320" height="1200" loading="eager" fetchpriority="high" decoding="sync">
     </picture>
   </div>
 </div></section>
@@ -298,7 +305,7 @@ src="https://www.facebook.com/tr?id=1248784553899062&ev=PageView&noscript=1"
 
 <section class="section social"><div class="wrap"><div class="eyebrow reveal">Provas reais</div><h2 class="reveal">Não é promessa.<br><span class="gold">É resultado acontecendo.</span></h2><p class="lead reveal">Resultados reais compartilhados por quem colocou estratégia, comercial e execução em prática.</p>
   <div class="proof-video reveal" id="proofVideo">
-    <video id="proofVideoPlayer" controls playsinline preload="none" poster="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/5cf8d071-98db-493f-8a74-a609839984eb.jpg" aria-label="Depoimento em vídeo">
+    <video id="proofVideoPlayer" controls playsinline preload="none" data-poster="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/5cf8d071-98db-493f-8a74-a609839984eb.jpg" aria-label="Depoimento em vídeo">
       <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JdaefnFIMmag1Ko9QT419tcGBM/1c91c3be-d018-4fcc-b904-575b286b8217.mp4" type="video/mp4">
       Seu navegador não conseguiu reproduzir este vídeo.
     </video>
@@ -367,7 +374,7 @@ src="https://www.facebook.com/tr?id=1248784553899062&ev=PageView&noscript=1"
   <div class="reveal"><div class="eyebrow">A grande ideia</div><h2>O que significa fazer <span class="gold nowrap">1 Mês em 1 Dia?</span></h2>
     <div class="concept-statement">É sobre criar um pico de faturamento sem destruir o restante do mês.</div>
     <div class="concept-video">
-      <video controls playsinline preload="none" poster="/assets/imersao-1-mes-em-1-dia-poster.webp">
+      <video controls playsinline preload="none" data-poster="/assets/imersao-1-mes-em-1-dia-poster.webp">
         <source src="/assets/imersao-1-mes-em-1-dia.mp4" type="video/mp4">
         Seu navegador não conseguiu reproduzir este vídeo.
       </video>
@@ -461,6 +468,31 @@ src="https://www.facebook.com/tr?id=1248784553899062&ev=PageView&noscript=1"
 <script>
 function initReveals(){var reveals=[].slice.call(document.querySelectorAll('.reveal'));if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'120px 0px'});reveals.forEach(function(e){io.observe(e)})}else{reveals.forEach(function(e){e.classList.add('on')})}}
 requestAnimationFrame(initReveals);
+function initDeferredVideoPosters(){
+  var videos=[].slice.call(document.querySelectorAll('video[data-poster]'));
+  if(!videos.length)return;
+  function loadPoster(video){
+    var poster=video.getAttribute('data-poster');
+    if(poster&&!video.getAttribute('poster')){
+      video.setAttribute('poster',poster);
+      video.removeAttribute('data-poster');
+    }
+  }
+  if('IntersectionObserver' in window){
+    var posterIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          loadPoster(entry.target);
+          posterIo.unobserve(entry.target);
+        }
+      });
+    },{rootMargin:'700px 0px'});
+    videos.forEach(function(video){posterIo.observe(video)});
+  }else{
+    videos.forEach(loadPoster);
+  }
+}
+requestAnimationFrame(initDeferredVideoPosters);
 var progress=document.getElementById('progress'),progressTick=false;
 window.addEventListener('scroll',function(){if(progressTick)return;progressTick=true;requestAnimationFrame(function(){var m=document.documentElement.scrollHeight-window.innerHeight;progress.style.width=(m?window.scrollY/m*100:0)+'%';progressTick=false})},{passive:true});
 var modal=document.getElementById('leadModal');
