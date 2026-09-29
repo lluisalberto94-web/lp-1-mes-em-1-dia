@@ -483,8 +483,6 @@ function scrollToOffer(){
 }
 document.querySelectorAll('[data-scroll-offer]').forEach(function(b){b.addEventListener('click',function(){trackClarityEvent('cta_click');scrollToOffer()})});
 document.querySelectorAll('[data-open-form]').forEach(function(b){b.addEventListener('click',function(){trackClarityEvent('cta_click');openModal()})});document.querySelectorAll('[data-close-form]').forEach(function(b){b.addEventListener('click',closeModal)});modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
-function maskTel(input){input.addEventListener('input',function(){var v=this.value.replace(/\D/g,'').slice(0,11);if(v.length>10)this.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>6)this.value='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);else if(v.length>2)this.value='('+v.slice(0,2)+') '+v.slice(2);else this.value=v})}
-document.querySelectorAll('input[name="telefone"]').forEach(maskTel);
 var qs=new URLSearchParams(location.search);document.querySelectorAll('input[name^="utm_"]').forEach(function(el){el.value=qs.get(el.name)||''});
 document.querySelectorAll('[data-lead-form]').forEach(function(form){
   form.addEventListener('submit',async function(e){
