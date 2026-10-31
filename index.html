@@ -271,6 +271,10 @@ main>section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 900p
   .checkout-cash{margin-bottom:24px;font-size:14px}
   .checkout-btn{min-height:60px;font-size:14px}
 }
+
+/* Mobile hero containment: prevent the scrolling label from expanding the grid track */
+.hero-grid{min-width:0}.hero-copy,.hero-media{min-width:0}.last-spots-ticker{min-width:0;max-width:100%}
+@media(max-width:680px){.hero-grid{grid-template-columns:minmax(0,1fr);width:calc(100% - 44px);max-width:100%}.hero-copy{width:100%;min-width:0}.hero-copy h1,.hero-copy .lead,.hero-copy .audience-ribbon,.hero-copy .eventline{max-width:100%;overflow-wrap:break-word}.hero-copy .eventline{align-items:flex-start}.hero-copy .eventline em{overflow-wrap:anywhere}.hero-copy .cta-row{max-width:100%}.hero-copy .btn{max-width:100%}.last-spots-ticker{width:100%;overflow:hidden}.hero-media{width:100%;min-width:0}}
 </style>
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){
