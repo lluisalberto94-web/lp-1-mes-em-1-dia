@@ -278,6 +278,12 @@ main>section:not(.hero){content-visibility:auto;contain-intrinsic-size:auto 900p
 .lead-form select{width:100%;min-height:52px;border-radius:10px;padding:12px 14px;font:inherit;color:#f7f3e9;background:#1c1c1c;border:1px solid rgba(214,173,79,.35)}.lead-form select:focus{outline:2px solid #d6ad4f;outline-offset:2px}
 .occupation-options{border:0;padding:0;margin:8px 0 16px;min-width:0}.occupation-options legend{font-weight:700;margin-bottom:12px}.occupation-option{display:flex;align-items:flex-start;gap:10px;padding:9px 0;cursor:pointer;line-height:1.4}.occupation-option input{width:18px;height:18px;flex:0 0 18px;margin:2px 0 0;accent-color:#d6ad4f}.occupation-option span{flex:1;min-width:0}
 .occupation-other{display:none!important;grid-column:1/-1}.occupation-other.is-visible{display:block!important}.occupation-option:has(input[value="Outro"]:checked) + .occupation-other{display:block!important}
+
+/* Rolagem independente do formulario modal, inclusive no Safari do iPhone */
+.modal{overflow:hidden;overscroll-behavior:contain}
+.modal-card{max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#d6ad4f #191919}
+.modal-card::-webkit-scrollbar{width:5px}.modal-card::-webkit-scrollbar-thumb{background:#d6ad4f;border-radius:8px}
+@media(max-width:680px){.modal{padding:12px;align-items:center}.modal-card{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);padding:24px 18px 30px;overflow-y:auto}.modal-close{position:sticky;top:0;float:right;z-index:2}}
 </style>
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){
@@ -607,7 +613,7 @@ document.querySelectorAll('[data-lead-form]').forEach(function(form){
     var checked=form.querySelector('input[name="ocupacao"]:checked');
     var show=!!checked&&checked.value==='Outro';
     otherField.classList.toggle('is-visible',show);
-    if(show){requestAnimationFrame(function(){otherField.scrollIntoView({block:'nearest',behavior:'smooth'});});}
+    if(show){requestAnimationFrame(function(){var panel=form.closest('.modal-card');if(panel){var fieldTop=otherField.getBoundingClientRect().top-panel.getBoundingClientRect().top+panel.scrollTop;panel.scrollTo({top:Math.max(0,fieldTop-panel.clientHeight+otherField.offsetHeight+32),behavior:'smooth'});}else{otherField.scrollIntoView({block:'nearest',behavior:'smooth'});}});}
     otherInput.disabled=!show;
     otherInput.required=show;
     if(!show)otherInput.value='';
